@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="img/favicon.ico" rel="icon" type="image/x-icon">
+    <title>廠商細節</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/flatpickr.css" rel="stylesheet">
+    <link href="css/vue-select.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/table.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="navbar navbar-inverse fixed-top active" id="header">
+      <div class="navbar-brand"><a id="menu-toggle"><span class="material-icons">menu</span></a>
+        <h1> <a href="./1.0_index.html"><span>IIO</span>營運後台</a></h1>
+      </div>
+      <ul class="topbar-menu">
+        <li><span class="greeting">Have a Good Time</span></li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">notifications</span><span class="red-dot"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item"><a class="dropdown-info" href="3.1.1_selling-item.html"><span class="b-caption">[商品審核] [熱門]超可愛小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>16:55</span></div>
+                </li>
+                <li class="dropdown-item"><a class="dropdown-info" href="2.1.1_asset-detail.html"><span class="b-caption">[資產審核] 小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>09:55</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子鞋子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子裙子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">person_outline</span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item read"><a class="dropdown-info" href="./login.html"><span class="b-caption">登出</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </header>
+    <div class="container-fluid" id="main-content">
+      <div class="row">
+        <div class="expand" id="sidebar-wrapper">
+          <ul id="sidebar"></ul>
+          <div class="overlay show"></div>
+        </div>
+        <div class="col wrap">
+          <div class="row">
+            <div id="gotop"><span class="material-icons">arrow_upward</span></div>
+            <div class="col content-top">
+              <div class="breadcrum">營運後台>廠商管理>廠商名單管理
+              </div>
+            </div>
+          </div>
+          <div class="row" id="app">
+            <div class="content animated fadeIn">
+              <ul class="nav nav-tabs">
+              </ul>
+              <form class="form-wrap" id="basic-form" @submit.prevent="saveForm()" method="post">
+                <div class="form-top">
+                  <h2 class="text-h3">廠商細節
+                  </h2>
+                </div>
+                <fieldset>
+                  <div class="b-text-field d-block">
+                    <label>廠商名稱<span>*</span></label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <input class="b-input mr-none" type="text" v-model="formData.cpName" placeholder="請輸入廠商名稱" required>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field">
+                    <label>連絡電話<span>*</span></label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <input class="b-input mr-none" type="text" v-model="formData.phone" placeholder="請輸入廠商電話" required>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field">
+                    <label>信箱<span>*</span></label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <input class="b-input mr-none" type="email" v-model="formData.email" placeholder="請輸入廠商信箱" required>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>負責 BD<span>*</span></label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <input class="b-input mr-none" type="email" v-model="formData.contactPerson" placeholder="請輸入負責 BD" required>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field mr-md">
+                    <label>合約開始時間<span>*</span></label>
+                    <div class="b-field-row">
+                      <input class="b-input mr-none" id="dateRangeStart" type="text" v-model="formData.publishStart" placeholder="開始時間">
+                    </div>
+                  </div>
+                  <div class="b-text-field">
+                    <label>合約結束時間<span>*</span></label>
+                    <div class="b-field-row">
+                      <input class="b-input mr-none" id="dateRangeEnd" type="text" v-model="formData.publishEnd" placeholder="結束時間">
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>收款帳戶</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row"> 
+                        <div class="py-md px-lg mx-md bg-gray-1">
+                          <p class="b-caption">銀行代碼: 123 OO銀行</p>
+                          <p class="b-caption">分行: OO分行</p>
+                          <p class="b-caption">戶名: OOO</p>
+                          <p class="b-caption">帳號: 123456-8465535</p>
+                        </div>
+                        <div class="b-input-wrap">
+                          <button class="b-btn-primary outline" data-size="sm" type="button" @click="bankAccountEditActive"> <span v-if="!formData.bankAccountEdit">開啟編輯</span><span v-else>鎖定編輯</span></button><span class="tooltip-btn pl-xs" data-toggle="tooltip" data-placement="right" title="開啟編輯將允許廠商於後台填寫新的收款帳戶"><span class="material-icons">help_outline</span></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="d-flex justify-content-between align-items-center pt-sm">
+                    <div class="d-flex align-items-center pb-md">
+                      <h4 class="text-h4 pb-none">分潤設定</h4><span class="tooltip-btn pl-xs" data-toggle="tooltip" data-placement="right" title="為遊戲/IP設置分潤，商品售價為 100%，售出後平台撥款給廠商分潤比例"><span class="material-icons">help_outline</span></span>
+                    </div>
+                  </div>
+                  <div class="alert alert-warning d-inline-block mb-lg">
+                    <p class="my-xs">廠商實收金額 = ( 商品售價 - PA 手續費 ) * 分潤(%)</p>
+                    <p class="mb-xs b-caption">※ PA手續費依不同支付方式、拆分比設定調整</p>
+                  </div>
+                  <div class="b-text-field d-block mb-sm">
+                    <div class="b-field-group">
+                      <div class="b-field-row mb-xs">
+                        <div class="b-input-wrap">
+                          <h5 class="text-h5 pb-none">票券分潤設定 </h5>
+                        </div>
+                        <div class="b-input-wrap">
+                          <button class="b-btn-secondary outline" data-size="xs" type="button" @click="formData.ticketProfitSetting.edit = true"> 
+                            <template v-if="formData.ticketProfitSetting.edit">取消</template>
+                            <template v-else>修改</template>
+                          </button>
+                          <template v-if="formData.ticketProfitSetting.edit">
+                            <button class="b-btn-secondary outline animated fadeIn" data-size="xs" type="button" @click="formData.ticketProfitSetting.edit = false">儲存</button>
+                          </template>
+                        </div>
+                      </div>
+                      <div class="b-field-row mb-xs pl-md">
+                        <div class="b-input-wrap">
+                          <label class="py-xs">平台服務費(%)</label>
+                        </div>
+                        <div class="b-input-wrap">
+                          <input class="b-input" type="text" v-model="formData.ticketProfitSetting.percentage" :disabled="!formData.ticketProfitSetting.edit" placeholder="遊戲顯示名稱" required>
+                        </div>
+                      </div>
+                      <div class="b-field-row pl-md">
+                        <div class="b-input-wrap">
+                          <label class="my-xs">PA 手續費  </label>
+                        </div>
+                        <div class="b-radio mr-md pt-xxs">
+                          <input type="radio" id="TPSpa1" :disabled="!formData.ticketProfitSetting.edit" value="patotal" v-model="formData.ticketProfitSetting.pa">
+                          <label for="TPSpa1">全部轉嫁</label>
+                        </div>
+                        <div class="b-radio mr-md pt-xxs">
+                          <input type="radio" id="TPSpa2" :disabled="!formData.ticketProfitSetting.edit" value="pahalf" v-model="formData.ticketProfitSetting.pa">
+                          <label for="TPSpa2">半數吸收</label>
+                        </div>
+                        <div class="b-radio mr-md pt-xxs">
+                          <input type="radio" id="TPSpa3" :disabled="!formData.ticketProfitSetting.edit" value="panone" v-model="formData.ticketProfitSetting.pa">
+                          <label for="TPSpa3">全部吸收</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block mb-sm">
+                    <div class="b-field-group">
+                      <div class="b-field-row mb-xs">
+                        <div class="b-input-wrap">
+                          <h5 class="text-h5 pb-none">收藏品分潤設定</h5>
+                        </div>
+                        <div class="b-input-wrap">
+                          <button class="b-btn-secondary outline animated fadeIn" data-size="xs" type="button" @click="formData.collectionProfitSetting.edit = true">修改</button>
+                          <template v-if="formData.collectionProfitSetting.edit">
+                            <button class="b-btn-secondary outline animated fadeIn" data-size="xs" type="button" @click="formData.collectionProfitSetting.edit = false">儲存</button>
+                          </template>
+                        </div>
+                      </div>
+                      <div class="b-field-row mb-xs pl-md">
+                        <div class="b-input-wrap">
+                          <label class="py-xs">平台服務費(%)</label>
+                        </div>
+                        <div class="b-input-wrap">
+                          <input class="b-input" type="text" v-model="formData.collectionProfitSetting.percentage" :disabled="!formData.collectionProfitSetting.edit" placeholder="遊戲顯示名稱" required>
+                        </div>
+                      </div>
+                      <div class="b-field-row pl-md">
+                        <div class="b-input-wrap">
+                          <label class="my-xs">PA 手續費</label>
+                        </div>
+                        <div class="b-radio mr-md pt-xxs">
+                          <input type="radio" id="CPSpa1" :disabled="!formData.collectionProfitSetting.edit" value="patotal" v-model="formData.collectionProfitSetting.pa">
+                          <label for="CPSpa1">全部轉嫁</label>
+                        </div>
+                        <div class="b-radio mr-md pt-xxs">
+                          <input type="radio" id="CPSpa2" :disabled="!formData.collectionProfitSetting.edit" value="pahalf" v-model="formData.collectionProfitSetting.pa">
+                          <label for="CPSpa2">半數吸收</label>
+                        </div>
+                        <div class="b-radio mr-md pt-xxs">
+                          <input type="radio" id="CPSpa3" :disabled="!formData.collectionProfitSetting.edit" value="panone" v-model="formData.collectionProfitSetting.pa">
+                          <label for="CPSpa3">全部吸收</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <div class="b-field-group">
+                      <div class="b-field-row mb-xs">
+                        <div class="b-input-wrap">
+                          <h5 class="text-h5 pb-none">道具分潤設定 </h5>
+                        </div>
+                        <div class="b-input-wrap"><span class="b-btn-primary text pl-sm no-underline" size="sm" @click="addField"><span class="material-icons">add</span>新增項目</span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <div class="b-field-group" v-for="item,idx in formData.gameProfitSetting">
+                      <template>
+                        <div class="b-field-row mb-xs animated fadeIn">
+                          <div class="b-input-wrap">
+                            <label class="my-xs">{{ idx + 1 }}.</label>
+                            <button class="b-btn-secondary outline animated fadeIn" data-size="xs" type="button" @click="formData.gameProfitSetting[idx].edit = true">修改</button>
+                            <template v-if="item.edit">
+                              <button class="b-btn-secondary outline animated fadeIn" data-size="xs" type="button" :disabled="!item.label || !item.percentage" @click="saveField(idx, 'game')">儲存</button>
+                              <button class="b-btn-secondary text animated fadeIn" data-size="xs" type="button" @click="removeField(idx,'game')">刪除</button>
+                            </template>
+                          </div>
+                        </div>
+                        <div class="b-field-row pl-md mb-none">
+                          <div class="b-input-wrap">
+                            <label class="my-xs">遊戲名稱</label>
+                          </div>
+                          <div class="b-input-wrap">
+                            <input class="b-input" type="text" v-model="item.label" :disabled="!item.edit" placeholder="遊戲顯示名稱" required>
+                          </div>
+                        </div>
+                        <div class="b-field-row mb-xs pl-md animated fadeIn">
+                          <div class="b-input-wrap">
+                            <label class="my-xs">平台服務費(%)</label>
+                          </div>
+                          <div class="b-input-wrap">
+                            <input class="b-input" type="text" v-model="item.percentage" :disabled="!item.edit" placeholder="遊戲分潤" required>
+                          </div>
+                        </div>
+                        <div class="b-field-row pl-md animated fadeIn">
+                          <div class="b-input-wrap">
+                            <label class="my-xs">PA 手續費</label>
+                          </div>
+                          <div class="b-radio mr-md pt-xxs">
+                            <input type="radio" :id="item.name + 'pa1'" :disabled="!item.edit" value="patotal" v-model="item.pa">
+                            <label :for="item.name + 'pa1'">全部轉嫁</label>
+                          </div>
+                          <div class="b-radio mr-md pt-xxs">
+                            <input type="radio" :id="item.name + 'pa2'" :disabled="!item.edit" value="pahalf" v-model="item.pa">
+                            <label :for="item.name + 'pa2'">半數吸收</label>
+                          </div>
+                          <div class="b-radio mr-md pt-xxs">
+                            <input type="radio" :id="item.name + 'pa3'" :disabled="!item.edit" value="panone" v-model="item.pa">
+                            <label :for="item.name + 'pa3'">全部吸收</label>
+                          </div>
+                        </div>
+                      </template>
+                    </div>
+                    <div class="b-field-row mb-lg"></div>
+                  </div>
+                </fieldset>
+                <div class="b-form-button">
+                  <button class="b-btn-secondary outline" data-size="lg" type="button" :disabled="saveBtnStatus.disabled" :data-loading="saveBtnStatus.loading" @click="showSaved">{{saveBtnStatus.label}}</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="copyright">&copy;2021 GASH Co, Ltd. All Right Reserved. </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/flatpickr.js"></script>
+    <script src="js/vue-select.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+      currentPage('廠商名單管理');
+      var jQfn = function (){
+          flatpickr('#dateRangeStart',{
+              static: true,
+              dateFormat: "Y/m/d",
+              minDate: new Date().fp_incr(3),
+          })
+          flatpickr('#dateRangeEnd',{
+              static: true,
+              dateFormat: "Y/m/d",
+              minDate: vm.formData.publishStart,
+      
+          })
+      
+      }
+      
+      var vm = new Vue({
+          el: '#app',
+          data() {
+              return {
+                  formData: {
+                      cpName: 'OO數位',
+                      phone: '',
+                      contactPerson: '',
+                      c2c: 10,
+                      bankAccountEdit: false,
+                      ticketProfitSetting: {
+                          percentage: 10,
+                          pa: 'patotal',
+                          edit: false,
+                      },
+                      collectionProfitSetting: {
+                          percentage: 10,
+                          pa: 'patotal',
+                          edit: false,
+                      },
+                      gameProfitSetting: [
+                          {   
+                              label: '遊戲一', name:'game1', 
+                              pa: 'patotal',
+                              percentage: 90,
+                              edit: false
+                          },
+                          {   
+                              label: '遊戲二', name:'game2', 
+                              pa: 'patotal',
+                              percentage: 90,
+                              edit: false
+                          },
+                      ],
+                      publishStart: '2021/11/30 12:05:55',
+                      publishEnd: '2022/1/30 12:05:55',
+                  },
+                  game:{
+                      validation: ''
+                  },
+                  publishStart: {
+                      validation: '',
+                  },
+                  publishEnd: {
+                      validation: '',
+                  },
+                  saveBtnStatus: {
+                      disabled: false,
+                      label: '儲存變更'
+                  },
+                  state: [
+                      {label: '使用中', markColor: 'success'},
+                      {label: '凍結', markColor: 'warning'},
+                      {label: '停用', markColor: 'draft'},
+                  ],
+              }
+          },
+          watch: {
+              "formData.limitation.count": function(){
+                  if(this.formData.limitation.count) {
+                      this.formData.limitation.value = 'limited'
+                  } 
+              },
+          },
+          methods: {
+              bankAccountEditActive: function() {
+                  this.formData.bankAccountEdit = !this.formData.bankAccountEdit
+              },
+              addField:function(type) {
+                  let item = {   
+                              label: '', 
+                              pa: 'patotal',
+                              percentage: '',
+                              edit: true
+                          };
+                  this.formData.gameProfitSetting.push(item)
+              },
+              removeField:function(idx,type) {
+                  if (type === 'game') {
+                      this.formData.gameProfitSetting.splice(idx, 1);
+                  }
+                  if (type === 'account') {
+                      this.formData.account.splice(idx, 1);
+                  }
+              },
+              saveField:function(idx,type) {
+                  this.formData.gameProfitSetting[idx].edit = false
+              },
+              showSaved: function() {
+                  this.saveBtnStatus.disabled = true
+                  this.saveBtnStatus.label = '儲存中'
+                  this.saveBtnStatus.loading = true
+                  window.setTimeout(function(){
+                      vm.saveBtnStatus.label = '儲存變更'
+                      vm.saveBtnStatus.loading = false
+                      vm.saveBtnStatus.disabled = false
+                  }, 3000);
+              },
+              saveForm: function (){
+                  this.submitBtnStatus.disabled = true  
+              }
+          },
+          mounted: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          },
+          updated: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          }
+      })
+    </script>
+  </body>
+</html>

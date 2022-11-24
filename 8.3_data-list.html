@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="img/favicon.ico" rel="icon" type="image/x-icon">
+    <title>資料權限</title>
+    <!--  Bootstrap Core CSS-->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- datepicker-->
+    <link href="css/flatpickr.css" rel="stylesheet">
+    <!-- DataTables-->
+    <link href="css/datatables.min.css" rel="stylesheet">
+    <!-- vue select-->
+    <link href="css/vue-select.css" rel="stylesheet">
+    <!--  Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/table.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="navbar navbar-inverse fixed-top active" id="header">
+      <div class="navbar-brand"><a id="menu-toggle"><span class="material-icons">menu</span></a>
+        <h1> <a href="./1.0_index.html"><span>IIO</span>營運後台</a></h1>
+      </div>
+      <ul class="topbar-menu">
+        <li><span class="greeting">Have a Good Time</span></li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">notifications</span><span class="red-dot"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item"><a class="dropdown-info" href="3.1.1_selling-item.html"><span class="b-caption">[商品審核] [熱門]超可愛小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>16:55</span></div>
+                </li>
+                <li class="dropdown-item"><a class="dropdown-info" href="2.1.1_asset-detail.html"><span class="b-caption">[資產審核] 小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>09:55</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子鞋子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子裙子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">person_outline</span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item read"><a class="dropdown-info" href="./login.html"><span class="b-caption">登出</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </header>
+    <!-- container-->
+    <div class="container-fluid" id="main-content">
+      <div class="row">
+        <div class="expand" id="sidebar-wrapper">
+          <ul id="sidebar"></ul>
+          <div class="overlay show"></div>
+        </div>
+        <div class="col wrap animated fadeIn" id="app">
+          <div class="row">
+            <div id="gotop"><span class="material-icons">arrow_upward</span></div>
+            <div class="col content-top">
+              <div class="breadcrum"> 營運後台>後台設定>資料權限
+              </div>
+              <div class="title-wrap">
+                <div class="info">
+                  <h2 class="text-h2">資料權限
+                  </h2>
+                </div>
+                <div class="toolbar"> 
+                </div>
+                <div class="b-caption w-100">角色分組權限設定
+                </div>
+              </div>
+              <div class="b-search-group">
+                <div class="b-search-buttons">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="content">
+              <div class="b-table-wrap">
+                <div class="b-table-title"></div>
+                <div class="table-responsive">
+                  <table class="table" id="roleList" style="width: 100%;">
+                    <thead> 
+                      <tr>
+                        <th> </th>
+                        <th>廠商</th>
+                        <th>資料組</th>
+                        <th>更新時間</th>
+                        <th> </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <template> 
+                        <template v-for="item,idx in dataGrid">
+                          <tr>
+                            <td> </td>
+                            <td> <span>{{ item.name }}</span></td>
+                            <td> 
+                              <template v-for="game,idx in item.game"><span v-if="idx === 0">{{ game.name }}</span><span v-else>, {{ game.name }}</span></template>
+                            </td>
+                            <td> <span>{{ item.update_time }}</span></td>
+                            <td> <a class="b-btn-default text m-none px-xs" data-size="sm" href="4.1_cp-list.html">廠商資料管理 </a></td>
+                          </tr>
+                        </template>
+                      </template>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- 確認刪除-->
+              <div class="modal fade" id="deleteConfirm" data-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                  <div class="modal-img" data-type="error"></div>
+                  <div class="modal-content">
+                    <div class="modal-body text-center">
+                      <h3 class="modal-title">刪除確認</h3>
+                      <p>刪除後將無法回復，確定執行？</p>
+                    </div>
+                    <div class="modal-footer justify-content-center pt-none">
+                      <button class="b-btn-danger" data-size="lg" type="button" onclick="closeModal('#deleteConfirm', 'y')">確認</button>
+                      <button class="b-btn-default text no-underline" data-size="md" type="button" onclick="closeModal('#deleteConfirm', 'y')">取消</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="copyright">&copy;2021 GASH Co, Ltd. All Right Reserved. </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Vue-->
+    <script src="js/vue.min.js"></script>
+    <!-- jQuery-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap Core JavaScript-->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- input plugin-->
+    <script src="js/datatables.min.js"></script>
+    <!-- input plugin-->
+    <script src="js/flatpickr.js"></script>
+    <!-- multiselector-->
+    <script src="js/vue-select.js"></script>
+    <!-- number-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+    <!-- Custom JavaScript-->
+    <script src="js/sidebar.js"></script>
+    <script src="js/custom.js"></script>
+    <script src="http://vitalets.github.io/x-editable/assets/mockjax/jquery.mockjax.js"></script>
+    <script>
+      currentPage('資料權限');
+      
+      var vm = new Vue({
+          el: '#app',
+          data: {
+              dataGrid: [
+                  {
+                      "id": "1",
+                      "name": "OO數位",
+                      "game":[
+                          { "name":"小丸子","key": "gamekey1"},
+                          { "name":"便利商店","key": "gamekey2"},
+                          { "name":"遊戲一","key": "gamekey3"},
+                          { "name":"遊戲A","key": "gamekey4"},
+                      ],
+                      "update_time": '2021/8/9 19:00',
+                  },
+                  {
+                      "id": "2",
+                      "name": "XX資訊",
+                      "game":[
+                          { "name":"遊戲二","key": "gamekey21"},
+                          { "name":"遊戲三","key": "gamekey22"},
+                          { "name":"遊戲四","key": "gamekey23"},
+                      ],
+                      "update_time": '2021/8/9 19:00',
+                  },
+                  {
+                      "id": "3",
+                      "name": "ZZ供應商",
+                      "game":[
+                          { "name":"遊戲五","key": "gamekey31"},
+                          { "name":"遊戲六","key": "gamekey32"},
+                      ],
+                      "update_time": '2021/8/9 19:00',
+                  },
+              ],
+          },
+          methods: {
+              
+          },
+          mounted: function () {
+          }
+      })
+      /* 子表格 */
+      function format ( d ) {
+          // `d` is the original data object for the row
+          let data = d.game.slice(6, -7).split(',');
+          let childTable = '';
+          for (let i=0 ; i<data.length; i++) {
+              let template = ''
+              if (data.length === (i+1)) {
+                  template = `
+                  <tr>
+                      <td class='dgc-blank dgc-child dgc-last'></td>
+                      <td>${data[i]}</td>
+                      <td> <a class='b-btn-default text m-none px-xs' data-size='sm' href='8.3.2_data-detail.html'>查看 </a></td>
+                  </tr>
+                  `
+              }else {
+                  template = `
+                  <tr>
+                      <td class='dgc-blank dgc-child'></td>
+                      <td>${data[i]}</td>
+                      <td> <a class='b-btn-default text m-none px-xs' data-size='sm' href='8.3.2_data-detail.html'>查看 </a></td>
+                  </tr>
+                  `
+              }
+              
+              childTable += template
+          }
+          return '<table cellspacing="0" border="0" style="width: 100%">'+ childTable + '</table>';
+      }
+      $(document).ready(function() {
+          var table = $('#roleList').DataTable({
+              "columnDefs": [{ targets: 'no-sort', orderable: false }],
+              "pagingType": "full_numbers",
+              "language": {
+                  "decimal":        "",
+                  "emptyTable":     "沒有可顯示的資料",
+                  "info":           "顯示從 _START_ 到 _END_ 共 _TOTAL_ 筆資料",
+                  "infoEmpty":      "顯示從 0 到 0 共 0 筆資料",
+                  "infoFiltered":   "(從 _MAX_ 筆篩選出)",
+                  "infoPostFix":    "",
+                  "thousands":      ",",
+                  "lengthMenu":     "顯示 _MENU_ 筆資料",
+                  "loadingRecords": "載入中...",
+                  "processing":     "執行中...",
+                  "search":         "篩選資料: ",
+                  "zeroRecords":    "查無符合資料",
+                  "paginate": {
+                      "first":      "第一筆",
+                      "last":       "最後一筆",
+                      "next":       "下一筆",
+                      "previous":   "上一筆"
+                  },
+                  "aria": {
+                      "sortAscending":  ": activate to sort column ascending",
+                      "sortDescending": ": activate to sort column descending"
+                  }
+              },
+              "columns": [
+                  {
+                      "className":      'dgc-control',
+                      "orderable":      false,
+                      "data":           null,
+                      "defaultContent": ''
+                  },
+                  { "data": "office" },
+                  { "data": "game" },
+                  { "data": "update_time" },
+                  { "data": "func" }
+              ],
+              "ordering": false,
+              scrollY:        '25rem',
+              scrollX:        true,
+              searching:      false,
+              scrollCollapse: true,
+              paging:         true,
+          });
+          $('#roleList tbody').on('click', 'td.dgc-control', function () {
+              var tr = $(this).closest('tr');
+              var row = table.row( tr );
+      
+              if ( row.child.isShown() ) {
+                  // This row is already open - close it
+                  row.child.hide();
+                  tr.removeClass('shown');
+              }
+              else {
+                  // Open this row
+                  row.child( format(row.data()) ).show();
+                  tr.addClass('shown');
+              }
+          } );
+      
+      
+      } );
+    </script>
+  </body>
+</html>

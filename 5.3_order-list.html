@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="img/favicon.ico" rel="icon" type="image/x-icon">
+    <title>訂單一覽</title>
+    <!--  Bootstrap Core CSS-->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- datepicker-->
+    <link href="css/flatpickr.css" rel="stylesheet">
+    <!-- DataTables-->
+    <link href="css/datatables.min.css" rel="stylesheet">
+    <!-- vue select-->
+    <link href="css/vue-select.css" rel="stylesheet">
+    <!--  Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/table.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="navbar navbar-inverse fixed-top active" id="header">
+      <div class="navbar-brand"><a id="menu-toggle"><span class="material-icons">menu</span></a>
+        <h1> <a href="./1.0_index.html"><span>IIO</span>營運後台</a></h1>
+      </div>
+      <ul class="topbar-menu">
+        <li><span class="greeting">Have a Good Time</span></li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">notifications</span><span class="red-dot"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item"><a class="dropdown-info" href="3.1.1_selling-item.html"><span class="b-caption">[商品審核] [熱門]超可愛小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>16:55</span></div>
+                </li>
+                <li class="dropdown-item"><a class="dropdown-info" href="2.1.1_asset-detail.html"><span class="b-caption">[資產審核] 小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>09:55</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子鞋子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子裙子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">person_outline</span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item read"><a class="dropdown-info" href="./login.html"><span class="b-caption">登出</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </header>
+    <!-- container-->
+    <div class="container-fluid" id="main-content">
+      <div class="row">
+        <div class="expand" id="sidebar-wrapper">
+          <ul id="sidebar"></ul>
+          <div class="overlay show"></div>
+        </div>
+        <div class="col wrap animated fadeIn" id="app">
+          <div class="row">
+            <div id="gotop"><span class="material-icons">arrow_upward</span></div>
+            <div class="col content-top">
+              <div class="breadcrum"> 營運後台>商品上架管理>訂單一覽
+              </div>
+              <div class="title-wrap">
+                <div class="info">
+                  <h2 class="text-h2">訂單一覽
+                  </h2>
+                </div>
+                <div class="toolbar"> 
+                </div>
+                <div class="b-caption w-100">帳務訂單紀錄
+                </div>
+              </div>
+              <div class="b-search-group">
+                    <div class="b-text-field">
+                      <label>訂單編號
+                      </label>
+                      <div class="b-field-group"> 
+                        <div class="b-field-row">
+                          <input class="b-input" type="text" placeholder="search" required>
+                        </div>
+                      </div>
+                    </div>
+                <div class="b-text-field">
+                  <label>資產大類<span>*</span></label>
+                  <div class="b-field-group">
+                    <div class="b-field-row">
+                      <div class="b-input-wrap">
+                        <v-select class="b-select" :options="category.option" v-model="category.value" :clearable="false"></v-select>
+                      </div>
+                      <div class="b-input-wrap">
+                        <v-select class="b-select" :options="subCategory.option" v-model="subCategory.value" :clearable="false"></v-select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="b-text-field">
+                  <label>供應商</label>
+                  <div class="b-field-group">
+                    <div class="b-field-row">
+                      <v-select class="b-select" v-model="vendor.value" :options="vendor.option" autocomplete="off" placeholder="請選擇隸屬廠商"></v-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="b-text-field">
+                  <label>訂單成立時間</label>
+                  <div class="b-field-group">
+                    <div class="b-field-row">
+                      <input class="b-input mr-none" id="dateRangeStart" type="text" placeholder="開始時間" v-model="searchDateStart"><span class="p-xs">~</span>
+                      <input class="b-input" id="dateRangeEnd" type="text" placeholder="結束時間" v-model="searchDateEnd">
+                    </div>
+                  </div>
+                </div>
+                <div class="b-search-buttons">
+                      <button class="b-btn-default ladda-button" data-size="md" data-style="slide-left" type="button"><span class="ladda-label"><i class="fa fa-search"></i>查詢</span><span class="ladda-spinner"></span>
+                        <div class="ladda-progress" style="width:0"></div>
+                      </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="content">
+              <div class="b-table-wrap">
+                <div class="b-table-title"></div>
+                <div class="table-responsive">
+                  <table class="table table-hover" id="orderList">
+                    <thead> 
+                      <th>類型</th>
+                      <th>訂單成立時間</th>
+                      <th>訂單編號</th>
+                      <th>商品類型</th>
+                      <th>商品</th>
+                      <th>價格</th>
+                      <th>支付PA</th>
+                      <th>操作</th>
+                    </thead>
+                    <tbody>
+                      <template> 
+                        <tr v-for="item,idx in dataGrid">
+                          <td><span v-if="item.state">{{state[item.state].label}}</span></td>
+                          <td><span>{{item.orderDataTime}}</span></td>
+                          <td><span>{{item.orderID}}</span></td>
+                          <td> <span>{{item.type}}</span></td>
+                          <td> <span>{{item.item}}</span></td>
+                          <td> <span>{{'$ ' + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</span></td>
+                          <td><span>GAMA PAY</span></td>
+                          <td>
+                            <button class="b-btn-default text m-none px-xs" data-size="sm" onclick="window.location.href='./5.3.1_order-detail.html'">查看 </button>
+                          </td>
+                        </tr>
+                      </template>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- 確認刪除-->
+              <div class="modal fade" id="deleteConfirm" data-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                  <div class="modal-img" data-type="error"></div>
+                  <div class="modal-content">
+                    <div class="modal-body text-center">
+                      <h3 class="modal-title">刪除確認</h3>
+                      <p>刪除後將無法回復，確定執行？</p>
+                    </div>
+                    <div class="modal-footer justify-content-center pt-none">
+                      <button class="b-btn-danger" data-size="lg" type="button" onclick="closeModal('#deleteConfirm', 'y')">確認</button>
+                      <button class="b-btn-default text no-underline" data-size="md" type="button" onclick="closeModal('#deleteConfirm', 'y')">取消</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="copyright">&copy;2021 GASH Co, Ltd. All Right Reserved. </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Vue-->
+    <script src="js/vue.min.js"></script>
+    <!-- jQuery-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap Core JavaScript-->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- input plugin-->
+    <script src="js/datatables.min.js"></script>
+    <!-- input plugin-->
+    <script src="js/flatpickr.js"></script>
+    <!-- multiselector-->
+    <script src="js/vue-select.js"></script>
+    <!-- number-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+    <!-- Custom JavaScript-->
+    <script src="js/sidebar.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+      currentPage('訂單一覽'); 
+      var jQfn = function (){
+          flatpickr('#dateRangeStart',{
+              static: true,
+              enableTime: true,
+              enableSeconds: true,
+              dateFormat: "Y/m/d H:i:ss",
+          })
+          flatpickr('#dateRangeEnd',{
+              static: true,
+              enableSeconds: true,
+              enableTime: true,
+              dateFormat: "Y/m/d H:i:ss",
+              minDate: vm.searchDateStart,
+          })
+      }
+      var vm = new Vue({
+          el: '#app',
+          data: {
+              vendor: {
+                  value: {label: 'OO廠商', value: 1},
+                  option: [
+                      {label: 'OO廠商', value: 1},
+                      {label: '廠商01', value: 2},
+                      {label: '廠商02', value: 3},
+                      {label: '廠商03', value: 4},
+                  ],
+                  validation: true
+              },
+              category: {
+                  value:'道具',
+                  option: [
+                      {value: 'item', label: '道具'},
+                      {value: 'ticket', label: '票券'},
+                      {value: 'collection', label: '其他'}
+                  ]
+              },
+              subCategory: {
+                  value:'全部',
+                  option: [
+                      {value: 'all', label: '全部'},
+                      {value: 'maruko', label: '小丸子'},
+                      {value: 'game2', label: '遊戲二'},
+                      {value: 'game3', label: '遊戲三'}
+                  ]
+              },
+              state: [
+                  {label: ''},
+                  {label: '調退單'},
+              ],
+              searchDateStart:'',
+              searchDateEnd:'',
+              dataGrid: [
+                  {
+                      state: 0,
+                      orderID: 'ORD-1562792771583',
+                      openID: '1016509000913002524',
+                      item: '[熱門] 經典特色小丸子帽子',
+                      phone: '0912345678',
+                      price: 1688,
+                      type: 'B2C',
+                      mail:'deanna.curtis@example.com',
+                      orderDataTime: '12/15/2021 2:46 PM',
+                  },
+                  {
+                      state: 0,
+                      orderID: 'ORD-1562792772493',
+                      openID: '1016509000913002524',
+                      item: '[熱門] 經典特色小丸子鞋子',
+                      phone: '09123456489',
+                      price: 1688,
+                      type: 'B2C',
+                      mail:'tanya.hill@example.com',
+                      orderDataTime: '12/15/2021 4:30 PM',
+                  },
+                  {
+                      state: 1,
+                      orderID: 'ORD-1562792779615',
+                      openID: '1016509000913002524',
+                      item: '[熱門] 經典特色小丸子帽子',
+                      phone: '09123426789',
+                      price: 1688,
+                      type: 'B2C',
+                      mail:'bill.sanders@example.com',
+                      orderDataTime: '12/15/2021 4:30 PM',
+                  },
+                  {
+                      state: 0,
+                      orderID: 'ORD-1562792776427',
+                      openID: '1016509000913002524',
+                      item: '[熱門] 經典特色小丸子帽子',
+                      phone: '09123456489',
+                      price: 1688,
+                      type: 'C2C',
+                      mail:'michael.mitc@example.com',
+                      orderDataTime: '12/15/2021 5:15 PM',
+                  }, 
+                  {
+                      state: 0,
+                      orderID: 'ORD-1562792781478',
+                      openID: '1016509000913002524',
+                      item: '[熱門] 經典特色小丸子帽子',
+                      phone: '09123456739',
+                      price: 1688,
+                      type: 'C2C',
+                      mail:'felicia.reid@example.com',
+                      orderDataTime: '12/15/2021 4:30 PM',
+                  },
+              ],
+          },
+          methods: {
+          },
+          mounted: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          },
+          updated: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          }
+      })
+      $(document).ready(function() {
+          $('#orderList').DataTable({
+              "pagingType": "full_numbers",
+              "language": {
+                  "decimal":        "",
+                  "emptyTable":     "沒有可顯示的資料",
+                  "info":           "顯示從 _START_ 到 _END_ 共 _TOTAL_ 筆資料",
+                  "infoEmpty":      "顯示從 0 到 0 共 0 筆資料",
+                  "infoFiltered":   "(從 _MAX_ 筆篩選出)",
+                  "infoPostFix":    "",
+                  "thousands":      ",",
+                  "lengthMenu":     "顯示 _MENU_ 筆資料",
+                  "loadingRecords": "載入中...",
+                  "processing":     "執行中...",
+                  "search":         "篩選資料: ",
+                  "zeroRecords":    "查無符合資料",
+                  "paginate": {
+                      "first":      "第一筆",
+                      "last":       "最後一筆",
+                      "next":       "下一筆",
+                      "previous":   "上一筆"
+                  },
+                  "aria": {
+                      "sortAscending":  ": activate to sort column ascending",
+                      "sortDescending": ": activate to sort column descending"
+                  }
+              },
+              "order": [[ 0, "asc" ]],
+              fixedColumns: {
+                  rightColumns: 1
+              },
+              scrollY:        '25rem',
+              scrollX:        true,
+              searching:      false,
+              scrollCollapse: true,
+              searching:      false,
+          });
+      } );
+    </script>
+  </body>
+</html>

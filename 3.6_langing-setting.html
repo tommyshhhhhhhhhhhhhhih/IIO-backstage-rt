@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="img/favicon.ico" rel="icon" type="image/x-icon">
+    <title>Default title</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/flatpickr.css" rel="stylesheet">
+    <link href="css/datatables.min.css" rel="stylesheet">
+    <link href="css/vue-select.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/table.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="navbar navbar-inverse fixed-top active" id="header">
+      <div class="navbar-brand"><a id="menu-toggle"><span class="material-icons">menu</span></a>
+        <h1> <a href="./1.0_index.html"><span>IIO</span>營運後台</a></h1>
+      </div>
+      <ul class="topbar-menu">
+        <li><span class="greeting">Have a Good Time</span></li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">notifications</span><span class="red-dot"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item"><a class="dropdown-info" href="3.1.1_selling-item.html"><span class="b-caption">[商品審核] [熱門]超可愛小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>16:55</span></div>
+                </li>
+                <li class="dropdown-item"><a class="dropdown-info" href="2.1.1_asset-detail.html"><span class="b-caption">[資產審核] 小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>09:55</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子鞋子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子裙子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">person_outline</span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item read"><a class="dropdown-info" href="./login.html"><span class="b-caption">登出</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </header>
+    <div class="container-fluid" id="main-content">
+      <div class="row">
+        <div class="expand" id="sidebar-wrapper">
+          <ul id="sidebar"></ul>
+          <div class="overlay show"></div>
+        </div>
+        <div class="col">
+          <div class="row">
+            <div class="col content-top">
+              <div class="breadcrum">營運後台>商城管理>首頁管理</div>
+              <div class="title-wrap">
+                <div class="info">
+                  <h2 class="text-h2">首頁管理</h2>
+                  <p>設定首頁出現的區塊</p>
+                </div>
+                <div class="toolbar"> </div>
+              </div>
+            </div>
+          </div>
+          <div class="row"> 
+            <div class="content animated fadeIn">
+              <h3 class="text-h3">搜尋推薦</h3>
+              <div class="form-wrap pb-0">
+                    <div class="b-text-field">
+                      <label>標籤設定<span>*</span>
+                      </label>
+                      <div class="b-field-group"> 
+                        <div class="b-field-row">
+                          <div class="b-input-wrap">
+                            <input class="b-input" type="text" placeholder="search" required><span class="b-input-hint">搜尋排行：1.新楓之谷M 2.天堂M 3.怪物彈珠</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+              </div>
+              <hr>
+              <h3 class="text-h3">商品區塊</h3>
+              <div class="title-wrap">
+                    <button class="b-btn-primary ladda-button" data-size="md" data-style="slide-left"><span class="ladda-label">新增區塊</span><span class="ladda-spinner"></span>
+                      <div class="ladda-progress" style="width:0"></div>
+                    </button>
+                    <button class="b-btn-secondary outline ladda-button" data-size="sm" data-style="slide-left"><span class="ladda-label">歷史紀錄</span><span class="ladda-spinner"></span>
+                      <div class="ladda-progress" style="width:0"></div>
+                    </button>
+              </div>
+              <ul class="form-wrap" id="example1">
+                <li> 
+                  <div class="handle"> <i class="fa fa-arrows"></i></div>
+                      <div class="b-text-field">
+                        <label>區塊顯示標題<span>*</span>
+                        </label>
+                        <div class="b-field-group"> 
+                          <div class="b-field-row">
+                            <input class="b-input" type="text" placeholder="search" required>
+                          </div>
+                        </div>
+                      </div>
+                  <div class="text-field">
+                    <label>顯示商品<span>*</span></label>
+                    <div class="field-items">
+                      <div class="field-item">
+                        <div class="chosentree"></div>
+                      </div>
+                    </div>
+                  </div>
+                      <div class="b-text-field">
+                        <label>商品排序方式<span>*</span>
+                        </label>
+                        <div class="b-field-group"> 
+                          <div class="b-field-row">
+                            <select class="b-select">
+                              <option value="依上架時間(新→舊)">依上架時間(新→舊)</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                  <p id="texttt"></p>
+                </li>
+                <li> 
+                  <div class="handle"> <i class="fa fa-arrows"></i></div>
+                      <div class="b-text-field">
+                        <label>區塊顯示標題<span>*</span>
+                        </label>
+                        <div class="b-field-group"> 
+                          <div class="b-field-row">
+                            <input class="b-input" type="text" placeholder="search" required>
+                          </div>
+                        </div>
+                      </div>
+                  <div class="text-field">
+                    <label>顯示商品<span>*</span></label>
+                    <div class="field-items">
+                      <div class="field-item">
+                        <div class="chosentree"></div>
+                      </div>
+                    </div>
+                  </div>
+                      <div class="b-text-field">
+                        <label>商品排序方式<span>*</span>
+                        </label>
+                        <div class="b-field-group"> 
+                          <div class="b-field-row">
+                            <select class="b-select">
+                              <option value="依上架時間(新→舊)">依上架時間(新→舊)</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                </li>
+                <li> 
+                  <div class="handle"> <i class="fa fa-arrows"></i></div>
+                      <div class="b-text-field">
+                        <label>區塊顯示標題<span>*</span>
+                        </label>
+                        <div class="b-field-group"> 
+                          <div class="b-field-row">
+                            <input class="b-input" type="text" placeholder="search" required>
+                          </div>
+                        </div>
+                      </div>
+                  <div class="text-field">
+                    <label>顯示商品<span>*</span></label>
+                    <div class="field-items">
+                      <div class="field-item">
+                        <div class="chosentree"></div>
+                      </div>
+                    </div>
+                  </div>
+                      <div class="b-text-field">
+                        <label>商品排序方式<span>*</span>
+                        </label>
+                        <div class="b-field-group"> 
+                          <div class="b-field-row">
+                            <select class="b-select">
+                              <option value="依上架時間(新→舊)">依上架時間(新→舊)</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/flatpickr.js"></script>
+    <script src="js/vue-select.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+      $('div.chosentree').chosentree({
+          width: 500,
+          deepLoad: true,
+          showtree: true,
+          load: function(node, callback) {
+              setTimeout(function() {
+              callback(loadChildren(node, 0));
+              }, 1000);
+          }
+          });
+      
+          var maxDepth = 2;
+          var loadChildren = function(node, level) {
+              var hasChildren = node.level < maxDepth;
+              for (var i=0; i<4; i++) {
+                  var id = node.id + (i+1).toString();
+                  node.children.push({
+                      id:id,
+                      title:'內容 ' + id,
+                      has_children:hasChildren,
+                      level: node.level,
+                      children:[]
+                  });
+                  if (hasChildren && level < 1) {
+                      loadChildren(node.children[i], (level+1));
+                  }
+              }
+              console.log(node)
+              return node;
+          };
+          
+    </script>
+  </body>
+</html>

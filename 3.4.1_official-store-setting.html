@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="img/favicon.ico" rel="icon" type="image/x-icon">
+    <title>官方旗艦店</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/flatpickr.css" rel="stylesheet">
+    <link href="css/vue-select.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/table.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="navbar navbar-inverse fixed-top active" id="header">
+      <div class="navbar-brand"><a id="menu-toggle"><span class="material-icons">menu</span></a>
+        <h1> <a href="./1.0_index.html"><span>IIO</span>營運後台</a></h1>
+      </div>
+      <ul class="topbar-menu">
+        <li><span class="greeting">Have a Good Time</span></li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">notifications</span><span class="red-dot"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item"><a class="dropdown-info" href="3.1.1_selling-item.html"><span class="b-caption">[商品審核] [熱門]超可愛小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>16:55</span></div>
+                </li>
+                <li class="dropdown-item"><a class="dropdown-info" href="2.1.1_asset-detail.html"><span class="b-caption">[資產審核] 小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>09:55</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子鞋子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子裙子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">person_outline</span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item read"><a class="dropdown-info" href="./login.html"><span class="b-caption">登出</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </header>
+    <div class="container-fluid" id="main-content">
+      <div class="row">
+        <div class="expand" id="sidebar-wrapper">
+          <ul id="sidebar"></ul>
+          <div class="overlay show"></div>
+        </div>
+        <div class="col wrap">
+          <div class="row">
+            <div id="gotop"><span class="material-icons">arrow_upward</span></div>
+            <div class="col content-top">
+              <div class="breadcrum">營運後台>商城管理>官方旗艦店
+              </div>
+            </div>
+          </div>
+          <div class="row" id="app">
+            <div class="content animated fadeIn">
+              <ul class="nav nav-tabs">
+              </ul>
+              <form class="form-wrap" id="basic-form" @submit.prevent="saveForm()" method="post">
+                <div class="form-top">
+                  <h2 class="text-h3">官方旗艦店
+                  </h2>
+                </div>
+                <fieldset>
+                  <div class="d-flex flex-wrap justify-content-between">
+                    <div>
+                      <div class="b-text-field d-block">
+                        <label>標題<span>*</span></label>
+                        <div class="b-field-group">
+                          <div class="b-field-row">
+                            <div class="b-input-wrap">
+                              <input class="b-input" type="text" v-model="dataInfo.title" maxlength="15" placeholder="請輸入資料名稱" required><span class="b-input-hint">({{ dataInfo.title.length }}/15) </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="b-text-field d-block">
+                        <label>版位類型</label>
+                        <div class="b-field-group">
+                          <div class="b-field-row">
+                            <v-select class="b-select" :options="slotType" v-model="dataInfo.type" label="label" placeholder="選擇版位類型" :clearable="false"></v-select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="b-text-field d-block">  
+                        <label>選擇圖檔<span>* </span><span class="text-danger pl-md" v-if="showImgAlert">圖檔過大</span></label>
+                        <div class="b-field-group pl-xs"> 
+                          <div class="b-field-row mb-none animated fadeIn" v-if="dataInfo.type.label === '主視覺圓圖'">
+                            <div class="b-radio mr-md" v-for="item in circleType">
+                              <input type="radio" :id="item.value" :value="item.value" v-model="dataInfo.circleBreak">
+                              <label :for="item.value">{{ item.label }}</label>
+                            </div>
+                          </div>
+                          <div class="b-field-row d-flex align-items-center">
+                            <label class="b-btn-primary outline ml-none" for="adImg" data-size="md">選擇檔案
+                              <input data-name="main" type="file" id="adImg" accept=".png, .jpg, .jepg" @change="uploadPreview">
+                            </label>
+                            <p class="b-caption mb-xs"><span class="b-caption d-block">圖片:{{ dataInfo.imgName }}  {{ dataInfo.type.img }} .jpg or .png (<200 kb)</span></p>
+                          </div>
+                          <div class="b-field-row d-flex align-items-center animated fadeIn" v-if="dataInfo.circleBreak === 'break' &amp;&amp; dataInfo.type.label === '主視覺圓圖'">
+                            <label class="b-btn-primary outline ml-none" for="adImg2" data-size="md">選擇檔案
+                              <input data-name="break" type="file" id="adImg2" accept=".png, .jpg, .jepg" @change="uploadPreview">
+                            </label>
+                            <p class="b-caption mb-xs"><span class="b-caption d-block">破版圖片:{{ dataInfo.img2Name }} 570x570 .jpg or .png (<200 kb)</span></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- ===== 版位預覽 =====-->
+                    <div class="m-s-demo">
+                      <div :class="dataInfo.type.class">
+                        <div class="demo-img object-fit position-relative"><img :src="dataInfo.img" alt="" v-if="dataInfo.img"><img src="./img/default-img.png" alt="預設圖" v-else></div>
+                        <div class="break-img object-fit" v-if="dataInfo.circleBreak === 'break'"><img :src="dataInfo.img2" alt="" v-if="dataInfo.img2 &amp;&amp; dataInfo.type.label === '主視覺圓圖'"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- ===== 主視覺圓圖才會出現的文字 =====   -->
+                  <template v-if="dataInfo.type.value === 1">
+                    <div class="b-text-field d-block animated fadeIn">
+                      <label>顯示標題<span>*</span></label>
+                      <div class="b-field-group"> 
+                        <div class="b-field-row">
+                          <div class="b-input-wrap">
+                            <input class="b-input" type="text" v-model="dataInfo.showTitle" maxlength="15" placeholder="請輸入顯示標題" required><span class="b-input-hint">({{ dataInfo.showTitle.length }}/15) </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="b-text-field d-block animated fadeIn">
+                      <label>顯示描述<span>*</span></label>
+                      <div class="b-field-group"> 
+                        <div class="b-field-row">
+                          <div class="b-input-wrap">
+                            <textarea class="b-textarea" rows="4" cols="48" v-model="dataInfo.showDesc" placeholder="請輸入顯示描述" maxlength="35" required></textarea><span class="b-input-hint">({{ dataInfo.showDesc.length }}/35)</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                  <div class="b-text-field d-block animated fadeIn">
+                    <label>連結網址</label>
+                    <div class="b-field-group"> 
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <input class="b-input width-400" type="text" v-model.trim="dataInfo.link" placeholder="請輸入連結"><a class="my-xs b-btn-default outline" data-size="sm" :href="dataInfo.link" target="_blank" :disabled="!dataInfo.link">連結測試</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>開啟方式</label>
+                    <div class="b-field-group pl-xs"> 
+                      <div class="b-field-row mb-none">
+                        <div class="b-radio mr-md" v-for="item in openMethods">
+                          <input type="radio" :id="item.value" :value="item.value" v-model="dataInfo.openPath">
+                          <label :for="item.value">{{ item.label }}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>發布開始時間</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <input class="b-input mr-none" id="dateRangeStart" type="text" placeholder="開始時間" v-model="dataInfo.timeStart">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>發布結束時間</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <input class="b-input" id="dateRangeEnd" type="text" placeholder="結束時間" v-model="dataInfo.timeEnd" :required="dataInfo.timeStart">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>顯示順序<span class="tooltip-btn" data-toggle="tooltip" data-placement="right" title="未填寫 or 重複順序則依系統順序顯示"><span class="material-icons">info</span></span></label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <input class="b-input" type="number" v-model="dataInfo.order" maxlength="5" placeholder="請輸入顯示順序">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <div class="b-form-button">
+                  <button class="b-btn-secondary outline mt-xl" data-size="lg" onclick="window.location.href='./8.3_data-list.html'">取消</button>
+                  <button class="b-btn-primary mt-xl" data-size="lg" :disabled="saveBtnStatus.disabled" :data-loading="saveBtnStatus.loading">{{saveBtnStatus.label}}</button>
+                </div>
+              </form>
+              <!-- -->
+              <div class="modal fade" id="hideConfirm" data-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                  <div class="modal-img" data-type="warning"></div>
+                  <div class="modal-content">
+                    <div class="modal-body text-center">
+                      <h3 class="modal-title">下架確認</h3>
+                      <p>執行下架後前台將不會顯示該版塊，確定執行？</p>
+                    </div>
+                    <div class="modal-footer justify-content-center pt-none">
+                      <button class="b-btn-default" data-size="lg" type="button" @click="">確認</button>
+                      <button class="b-btn-default text no-underline" data-size="md" type="button" onclick="closeModal('#hideConfirm', 'Y')">取消</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="copyright">&copy;2021 GASH Co, Ltd. All Right Reserved. </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/flatpickr.js"></script>
+    <script src="js/vue-select.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+      currentPage('官方旗艦店');
+      
+      var jQfn = function (){
+          flatpickr('#dateRangeStart',{
+              static: true,
+              enableTime: true,
+              enableSeconds: true,
+              dateFormat: "Y/m/d H:i:ss",
+          })
+          flatpickr('#dateRangeEnd',{
+              static: true,
+              enableSeconds: true,
+              enableTime: true,
+              dateFormat: "Y/m/d H:i:ss",
+              minDate: vm.dataInfo.timeStart,
+          })
+      }
+      
+      var vm = new Vue({
+          el: '#app',
+          data() {
+              return {
+                  dataInfo: {
+                      state: 1,
+                      title: '',
+                      type: '',
+                      circleBreak: 'round',
+                      img: "",
+                      imgName: "",
+                      img2: '',
+                      img2Name: '',
+                      showTitle: '',
+                      showDesc: '',
+                      link: '',
+                      openPath: 'inner',
+                      timeStart: '',
+                      timeEnd: '',
+                      order: '',
+                  },
+                  imgSize: '',
+                  slotType: [
+                      {value: 0, label: '彈出式廣告', img: '300x450',class: 'popupAd-demo'},
+                      {value: 1, label: '主視覺圓圖', img: '381x381',class: 'circle-demo'},
+                      {value: 2, label: '橫幅 banner', img: '400x120',class: 'banner-demo'},
+                  ],
+                  circleType: [
+                      {id: 0, label: '不破版', value: 'round'},
+                      {id: 1, label: '破版', value: 'break'},
+                  ],
+                  saveBtnStatus: {
+                      disabled: false,
+                      loading: false,
+                      label: '儲存變更'
+                  },
+                  openMethods: [
+                      {value: 'inner', label: '內開'},
+                      {value: 'outer', label: '外開'},
+                      {value: 'deeplink', label: 'deeplink'},
+                  ],
+                  state: [
+                      {label: '未發布', markColor: 'info'},
+                      {label: '刊登中', markColor: 'success'},
+                      {label: '已下架', markColor: 'draft'}
+                  ],
+                  showImgAlert: false,
+                  errorClass:'validate-error',
+              }
+          },
+          watch: {
+              "dataInfo.timeStart": function () {
+                  if(this.dataInfo.timeStart) {
+                      this.dataAuth.validation = false
+                  } else {
+                      this.dataAuth.validation = true
+                  }
+              },
+          },
+          methods: {
+              uploadPreview(e) {
+                  const file = e.target.files[0];
+                  //- console.log(e)
+                  if (e.target.dataset.name === 'main') {
+                      if (size_format_float(file.size / 1024, 2) < 200 ) {
+                          this.dataInfo.img = URL.createObjectURL(file);
+                          this.dataInfo.imgName = file.name;
+                      } else {
+                          this.showImgAlert = true
+                      }
+                  }
+                  if (e.target.dataset.name === 'break') {
+                      if (size_format_float(file.size / 1024, 2) < 200 ) {
+                          this.dataInfo.img2 = URL.createObjectURL(file);
+                          this.dataInfo.img2Name = file.name;
+                      } else {
+                          this.showImgAlert = true
+                      }
+                  }
+              },
+              saveForm: function (){
+                  function validation() {
+                      if(document.querySelectorAll('.validate-error').length > 0) {
+                          $('html, body').animate({
+                              scrollTop: $('.validate-error').offset().top - 50
+                          }, 300);
+                          vm.saveBtnStatus.disabled = false
+                      } else {
+                          vm.showSaved()
+                      }
+                  }
+      
+                  this.saveBtnStatus.disabled = true
+      
+                  window.setTimeout(function(){
+                      validation()
+                  }, 600);
+              },
+              showSaved: function() {
+                  this.saveBtnStatus.loading = true
+                  this.saveBtnStatus.label = '儲存中'
+                  window.setTimeout(function(){
+                      vm.saveBtnStatus.disabled = true
+                      vm.saveBtnStatus.loading = false
+                      vm.saveBtnStatus.label = '已儲存'
+                  }, 1000);
+                  window.setTimeout(function(){
+                      vm.saveBtnStatus.label = '儲存變更'
+                      vm.saveBtnStatus.disabled = false
+                  }, 2000);
+              },
+              
+          },
+          mounted: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          },
+          updated: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          }
+      })
+    </script>
+  </body>
+</html>

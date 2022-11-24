@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="img/favicon.ico" rel="icon" type="image/x-icon">
+    <title>C2C 商品細節</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/flatpickr.css" rel="stylesheet">
+    <link href="css/vue-select.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/table.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="navbar navbar-inverse fixed-top active" id="header">
+      <div class="navbar-brand"><a id="menu-toggle"><span class="material-icons">menu</span></a>
+        <h1> <a href="./1.0_index.html"><span>IIO</span>營運後台</a></h1>
+      </div>
+      <ul class="topbar-menu">
+        <li><span class="greeting">Have a Good Time</span></li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">notifications</span><span class="red-dot"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item"><a class="dropdown-info" href="3.1.1_selling-item.html"><span class="b-caption">[商品審核] [熱門]超可愛小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>16:55</span></div>
+                </li>
+                <li class="dropdown-item"><a class="dropdown-info" href="2.1.1_asset-detail.html"><span class="b-caption">[資產審核] 小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>09:55</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子鞋子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子裙子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">person_outline</span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item read"><a class="dropdown-info" href="./login.html"><span class="b-caption">登出</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </header>
+    <div class="container-fluid" id="main-content">
+      <div class="row">
+        <div class="expand" id="sidebar-wrapper">
+          <ul id="sidebar"></ul>
+          <div class="overlay show"></div>
+        </div>
+        <div class="col wrap">
+          <div class="row">
+            <div id="gotop"><span class="material-icons">arrow_upward</span></div>
+            <div class="col content-top">
+              <div class="breadcrum">營運後台>商品上架管理>C2C 商品細節
+              </div>
+            </div>
+          </div>
+          <div class="row" id="app">
+            <div class="content animated fadeIn">
+              <ul class="nav nav-tabs">
+              </ul>
+              <form class="form-wrap" id="basic-form" @submit.prevent="saveForm()" method="post">
+                <div class="form-top">
+                  <h2 class="text-h3">C2C 商品細節
+                  </h2>
+                </div>
+                <fieldset>
+                  <div class="b-text-field d-block">
+                    <label>狀態</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row"><span class="badge-success">刊登中</span></div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>刊登資產</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <p class="readonly">小丸子帽子</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>ITEMID</label>
+                    <div class="b-field-row mb-none">
+                      <input class="b-input width-350" id="copyContent" readonly :value="orderDetail.item.id" v-model="orderDetail.item.id">
+                      <button class="b-btn-default outline mx-none" data-size="sm" type="button" @click="copyID('#copyContent')"> 
+                        <template v-if="copyBtn"> <span>已複製 </span></template>
+                        <template v-else> <span class="material-icons ml-none mr-xxs fz-sm">copy</span><span>複製 </span></template>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>屬性資訊</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row mb-none">
+                        <div class="b-field-row"> 
+                          <ul class="p-md bg-gray-1">
+                            <li>{{ itemData.attribute.label }}</li>
+                            <li v-for="item in itemData.attribute.attribute">{{ item.label }} {{ item.name }} : {{ item.value }}</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>資產來源</label>
+                    <div class="b-field-row mb-none">
+                      <p class="readonly">fun 市集</p>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>商品ID</label>
+                    <div class="b-field-row mb-none">
+                      <input class="b-input width-350" id="copyContent2" readonly :value="orderDetail.item.id2" v-model="orderDetail.item.id2">
+                      <button class="b-btn-default outline mx-none" data-size="sm" type="button" @click="copyID('#copyContent2')"> 
+                        <template v-if="copyBtn2"> <span>已複製 </span></template>
+                        <template v-else> <span class="material-icons ml-none mr-xxs fz-sm">copy</span><span>複製 </span></template>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>刊登者資訊</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <p class="readonly">煞氣a豆子</p>
+                        <p class="b-caption"><span class="mr-xs material-icons">phone </span>0912345678<span class="ml-md mr-xs material-icons">mail</span>aaaa@gmail.com</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>刊登者 OPENID</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row mb-none">
+                        <input class="b-input width-350" id="copyContent3" readonly :value="orderDetail.userId" v-model="orderDetail.userId">
+                        <button class="b-btn-default outline mx-none" data-size="sm" type="button" @click="copyID('#copyContent3')"> <span class="material-icons ml-none mr-xxs fz-sm">copy</span><span>複製</span></button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>設定價格</label>
+                    <div class="b-field-row">
+                      <p class="readonly">{{ itemData.price }} 新台幣</p>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>刊登開始時間</label>
+                    <div class="b-field-row">
+                      <p class="readonly">{{ itemData.publishStart }}</p>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>備註</label>
+                    <div class="b-field-row">
+                      <p class="readonly"> </p>
+                    </div>
+                  </div>
+                </fieldset>
+                <div class="b-form-button">
+                  <button class="b-btn-secondary text" data-size="lg" type="button" onclick="window.location.href='./7.1_c2c-selling-list.html'">返回訂單列表</button>
+                  <button class="b-btn-secondary outline" data-size="lg" type="button" data-toggle="modal" data-target="#confirm">下架商品</button>
+                </div>
+              </form>
+              <!-- 下架確認-->
+              <div class="modal fade" id="confirm" data-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md" role="document">
+                  <div class="modal-img" data-type="warning"></div>
+                  <div class="modal-content">
+                    <div class="modal-body text-center">
+                      <h3 class="modal-title">確定下架？</h3>
+                      <p class="pb-sm">請填寫下架原因，原因將發送給刊登者。下架後該商品將不會出現在fun市集，且將解鎖背包資產操作功能。</p>
+                      <textarea class="b-textarea m-none" rows="4" cols="48" v-model="rejectReson" placeholder="輸入下架原因" maxlength="240" required></textarea>
+                    </div>
+                    <div class="modal-footer justify-content-center pt-none">
+                      <button class="b-btn-primary" data-size="lg" type="button" :disabled="!rejectReson" onclick="closeModal('#sentConfirm', 'y')">確認</button>
+                      <button class="b-btn-default text no-underline" data-size="md" type="button" data-dismiss="modal">取消</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="copyright">&copy;2021 GASH Co, Ltd. All Right Reserved. </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/flatpickr.js"></script>
+    <script src="js/vue-select.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+      currentPage('C2C出售清單');
+      var jQfn = function (){
+                     
+      }
+      
+      var vm = new Vue({
+          el: '#app',
+          data() {
+              return {
+                  rejectReson: '',
+                  itemData: {
+                      asset: '',
+                      productName: '[熱門] 可愛小丸子小學生帽',
+                      productDesc: '包含行銷文字的上架描述的說明會顯示在這裡。每次上架描述不同的行銷用語或者注意事項可以打在這裡。',
+                      productDescImg: [
+                          {
+                              src: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/maxresdefault-1590898973.jpg',
+                              name: '小丸子圖片.jpg',
+                              size: 123
+                          },{
+                              src: 'http://5b0988e595225.cdn.sohucs.com/images/20180828/890da19cf57349b991e4b4a2d4642c70.jpeg',
+                              name: '小丸子圖片-2.jpg',
+                              size: 123
+                          },
+      
+                      ],
+                      attribute: { 
+                          name: 'default',
+                          label: '預設',
+                          attribute: [
+                              {label: '等級',name:'level', value: 1},
+                              {label: '顏色',name:'color', value: "黃色"},
+                              {label: '天賦',name:'given', value: "呼朋引伴"}
+                          ]
+                      },
+                      path: 'gmall',
+                      publishStart: '2021/11/30 12:05:55',
+                      publishEnd: '2022/1/30 12:05:55',
+                      price: 888,
+                      limitation: {
+                          value: 'all',
+                          count: ''
+                      },
+                      uploadPin: '',
+                  },
+                  ave: 1288,
+                  orderDetail: {
+                      orderId: 'ORD-1562792771583',
+                      userId: '1534132354313846',
+                      phone: '0912345678',
+                      mail: 'deanna.curtis@example.com',
+                      item: {
+                          link: 'javascript:;',
+                          label: '[熱門] 超級厲害又可愛的小丸子鞋子(點擊外開商品頁)',
+                          id: '2bcace46-c2c8-11ea-b3de-0242ac130004',
+                          id2: '2bcace46-85135135135135',
+                          source: '商城',
+                          price: 1688,
+                          history: [
+                              {
+                                  time: '2021-10-29 04:03 AM',
+                                  activity: '取消刊登'
+                              },
+                              {
+                                  time: '2021-10-25 09:06 AM',
+                                  activity: '刊登至fun市集'
+                              },
+                              {
+                                  time: '2021-10-24 09:06 AM',
+                                  activity: '自遊戲回背包'
+                              },
+                              {
+                                  time: '2021-10-06 09:06 AM',
+                                  activity: '自背包到遊戲'
+                              },
+                          ]
+                      },
+                      price: 1688,
+      
+                  },
+                  game:{
+                      validation: ''
+                  },
+                  publishStart: {
+                      validation: '',
+                  },
+                  publishEnd: {
+                      validation: '',
+                  },
+                  saveBtnStatus: {
+                      disabled: false,
+                      label: '儲存變更'
+                  },
+                  copyBtn: false,
+                  copyBtn2: false,
+              }
+          },
+          watch: {
+              "orderDetail.limitation.count": function(){
+                  if(this.orderDetail.limitation.count) {
+                      this.orderDetail.limitation.value = 'limited'
+                  } 
+              },
+          },
+          methods: {
+              copyID: function(id) {
+                  let copyText = document.querySelector(id);
+                  //- console.log(copyText);
+                  if (id === '#copyContent') {
+                      vm.copyBtn = true
+                  }else {
+                      vm.copyBtn2 = true
+                  }
+                  copyText.select();
+                  document.execCommand("copy");
+                  window.setTimeout(function(){
+                      vm.copyBtn = false
+                      vm.copyBtn2 = false
+                  }, 2000);
+              },
+              saveForm: function (){
+                  this.submitBtnStatus.disabled = true  
+              }
+          },
+          mounted: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          },
+          updated: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          }
+      })
+    </script>
+  </body>
+</html>

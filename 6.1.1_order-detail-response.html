@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="img/favicon.ico" rel="icon" type="image/x-icon">
+    <title>訂單詳情</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/flatpickr.css" rel="stylesheet">
+    <link href="css/vue-select.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/table.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="navbar navbar-inverse fixed-top active" id="header">
+      <div class="navbar-brand"><a id="menu-toggle"><span class="material-icons">menu</span></a>
+        <h1> <a href="./1.0_index.html"><span>IIO</span>營運後台</a></h1>
+      </div>
+      <ul class="topbar-menu">
+        <li><span class="greeting">Have a Good Time</span></li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">notifications</span><span class="red-dot"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item"><a class="dropdown-info" href="3.1.1_selling-item.html"><span class="b-caption">[商品審核] [熱門]超可愛小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>16:55</span></div>
+                </li>
+                <li class="dropdown-item"><a class="dropdown-info" href="2.1.1_asset-detail.html"><span class="b-caption">[資產審核] 小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>09:55</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子鞋子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子裙子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">person_outline</span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item read"><a class="dropdown-info" href="./login.html"><span class="b-caption">登出</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </header>
+    <div class="container-fluid" id="main-content">
+      <div class="row">
+        <div class="expand" id="sidebar-wrapper">
+          <ul id="sidebar"></ul>
+          <div class="overlay show"></div>
+        </div>
+        <div class="col wrap">
+          <div class="row">
+            <div id="gotop"><span class="material-icons">arrow_upward</span></div>
+            <div class="col content-top">
+              <div class="breadcrum">營運後台>客服管理>訂單詳情
+              </div>
+            </div>
+          </div>
+          <div class="row" id="app">
+            <div class="content animated fadeIn">
+              <ul class="nav nav-tabs">
+              </ul>
+              <form class="form-wrap" id="basic-form" @submit.prevent="saveForm()" method="post">
+                <div class="form-top">
+                  <h2 class="text-h3">訂單詳情
+                  </h2>
+                </div>
+                <fieldset>
+                  <div class="b-text-field d-block">
+                    <label>訂單編號</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <p class="readonly">{{ orderDetail.orderId }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>發票資訊</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <p class="readonly">個人電子發票 - 手機載具 -  {{ orderDetail.invoice }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>訂單狀態</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap"><span class="badge-info">拒絕退款</span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>訂單途徑</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <p class="readonly">{{ orderDetail.path }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>提供者</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <p class="readonly">{{ orderDetail.provider }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>訂購會員 ID</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <p class="readonly">{{ orderDetail.openId }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>訂購會員電話</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <p class="readonly">{{ orderDetail.phone }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>訂購會員信箱</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <p class="readonly">{{ orderDetail.mail }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>購買商品</label>
+                    <div class="b-field-row">
+                      <p class="readonly"> <a :href="orderDetail.item.link">{{ orderDetail.item.label }}</a></p>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>商品價格</label>
+                    <div class="b-field-row">
+                      <p class="readonly">{{ '$ ' + orderDetail.item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' TWD'}}</p>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>支付PA</label>
+                    <div class="b-field-row">
+                      <p class="readonly">GAMA PAY</p>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>ITEMID</label>
+                    <div class="b-field-row mb-none">
+                      <div class="d-flex align-items-start">
+                        <input class="b-input w-100" id="copyContent" readonly :value="orderDetail.item.id" v-model="orderDetail.item.id">
+                        <button class="b-btn-default outline mb-none" data-size="sm" type="button" @click="copyID('#copyContent')"> 
+                          <template v-if="copyBtn"> <span>已複製 </span></template>
+                          <template v-else> <span class="material-icons ml-none mr-xxs fz-sm">copy</span><span>複製 </span></template>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>商品ID</label>
+                    <div class="b-field-row mb-none">
+                      <div class="d-flex align-items-start">
+                        <input class="b-input w-100" id="copyContent2" readonly :value="orderDetail.item.id" v-model="orderDetail.item.id">
+                        <button class="b-btn-default outline mb-none" data-size="sm" type="button" @click="copyID('#copyContent2')"> 
+                          <template v-if="copyBtn"> <span>已複製 </span></template>
+                          <template v-else> <span class="material-icons ml-none mr-xxs fz-sm">copy</span><span>複製 </span></template>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>資產狀態</label>
+                    <div class="b-field-group">
+                      <ul class="dot-list-wrap">
+                        <template v-for="item,idx in orderDetail.item.history"> 
+                          <li class="dot-list first" v-if="idx === 0"><span class="b-caption dot-list-caption">{{ item.time }}</span><span class="dot-list-label">{{ item.activity }}</span></li>
+                          <li class="dot-list last" v-else-if="(idx+1) === orderDetail.item.history.length"><span class="b-caption dot-list-caption">{{ item.time }}</span><span class="dot-list-label">{{ item.activity }}</span></li>
+                          <li class="dot-list" v-else><span class="b-caption dot-list-caption">{{ item.time }}</span><span class="dot-list-label">{{ item.activity }}</span></li>
+                        </template>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>凍結資產</label>
+                    <div class="b-field-row">
+                      <button class="b-btn-primary ml-none mb-md outline" data-size="md" type="button" :disabled="cpRes" data-toggle="modal" data-target="#assetFreze"> 解除凍結</button>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="b-text-field d-block">
+                    <label>廠商回覆</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row mb-none">
+                        <div class="b-radio mr-md">
+                          <input type="radio" id="cpRes1" v-model="cpRes" disabled value="true" name="normal">
+                          <label for="cpRes1">同意退款</label>
+                        </div>
+                        <div class="b-radio mr-md">
+                          <input type="radio" id="cpRes2" v-model="cpRes" disabled checked value="false" name="collection">
+                          <label for="cpRes2">不同意退款</label>
+                        </div>
+                      </div>
+                      <div class="b-input-wrap">
+                        <textarea class="b-textarea" rows="4" cols="48" disabled v-if="!cpRes">已於遊戲內交易使用</textarea>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <div class="b-form-button">
+                  <button class="b-btn-secondary text" data-size="lg" type="button" onclick="window.location.href='./6.1_search-order.html'">返回訂單列表</button>
+                  <button class="b-btn-primary" data-size="lg" type="button" data-toggle="modal" data-target="#success" :disabled="!cpRes">進行調退</button>
+                </div>
+              </form>
+              <!-- 送出-->
+              <div class="modal fade" id="success" data-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                  <div class="modal-img" data-type="success"></div>
+                  <div class="modal-content">
+                    <div class="modal-body text-center">
+                      <h3 class="modal-title">狀態已更動</h3>
+                      <p>訂單將修改為 [成功已調退]，並產生相應調退單。請至 PA 後台進行金流退款。</p>
+                    </div>
+                    <div class="modal-footer justify-content-center pt-none">
+                      <button class="b-btn-default outline" data-size="lg" type="button" data-dismiss="modal">返回訂單查詢</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="copyright">&copy;2021 GASH Co, Ltd. All Right Reserved. </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/flatpickr.js"></script>
+    <script src="js/vue-select.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+      currentPage('訂單查詢');
+      var jQfn = function (){
+      
+      }
+      
+      var vm = new Vue({
+          el: '#app',
+          data() {
+              return {
+                  cpRes: true,
+                  orderDetail: {
+                      orderId: 'ORD-1562792771583',
+                      openId: '1016509000913002524',
+                      path: 'B2C 商城',
+                      invoice:'123456789',
+                      provider: 'OO供應商',
+                      phone: '0912345678',
+                      mail: 'deanna.curtis@example.com',
+                      item: {
+                          link: 'javascript:;',
+                          label: '[熱門] 超級厲害又可愛的小丸子鞋子(點擊外開商品頁)',
+                          id: '2bcace46-c2c8-11ea-b3de-0242ac130004',
+                          id2: '2bcac024230004',
+                          price: 1688,
+                          history: [
+                              {
+                                  time: '2021-11-29 04:03 AM',
+                                  activity: '凍結資產'
+                              },
+                              {
+                                  time: '2021-10-29 04:03 AM',
+                                  activity: '取消刊登'
+                              },
+                              {
+                                  time: '2021-10-25 09:06 AM',
+                                  activity: '刊登至fun市集'
+                              },
+                              {
+                                  time: '2021-10-24 09:06 AM',
+                                  activity: '自遊戲回背包'
+                              },
+                              {
+                                  time: '2021-10-06 09:06 AM',
+                                  activity: '自背包到遊戲'
+                              },
+                          ]
+                      },
+                      price: 1688,
+                      assetState: '',
+                  },
+                  btnLoading: {
+                      search: false,
+                      refund: false,
+                      sendRefund: false,
+                  },
+                  refundReason: {
+                      value: '',
+                      maxLength: 200
+                  },
+                  copyBtn: false,
+                  copyBtn2: false,
+                  assetFreze: false,
+                  refundSent: false,
+              }
+          },
+          watch: {
+              "orderDetail.limitation.count": function(){
+                  if(this.orderDetail.limitation.count) {
+                      this.orderDetail.limitation.value = 'limited'
+                  } 
+              },
+          },
+          methods: {
+              getAssetState: function() {
+                  vm.btnLoading.search = true
+                  window.setTimeout(function(){
+                      vm.btnLoading.search = false
+                      vm.orderDetail.assetState = 'success'
+                  }, 2000);
+              }, 
+              copyID: function(id) {
+                  let copyText = document.querySelector(id);
+                  console.log(copyText);
+                  if (id === '#copyContent') {
+                      vm.copyBtn = true
+                  }else {
+                      vm.copyBtn2 = true
+                  }
+                  copyText.select();
+                  document.execCommand("copy");
+                  window.setTimeout(function(){
+                      vm.copyBtn = false
+                      vm.copyBtn2 = false
+                  }, 2000);
+              },
+              sendRefund: function(){
+                  this.btnLoading.sendRefund = true
+                  window.setTimeout(function(){
+                      vm.btnLoading.sendRefund = false
+                      vm.refundSent = true
+                      $('#refund').modal('hide')
+                      $('#success').modal('show')
+                  }, 2000);
+              },
+              frezeAsset: function(){
+                  this.assetFreze = !this.assetFreze
+                  $('#assetFreze').modal('hide')
+              },
+              saveForm: function (){
+                  this.submitBtnStatus.disabled = true  
+              }
+          },
+          mounted: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          },
+          updated: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          }
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="img/favicon.ico" rel="icon" type="image/x-icon">
+    <title>C2C 出售商品清單</title>
+    <!--  Bootstrap Core CSS-->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- datepicker-->
+    <link href="css/flatpickr.css" rel="stylesheet">
+    <!-- DataTables-->
+    <link href="css/datatables.min.css" rel="stylesheet">
+    <!-- vue select-->
+    <link href="css/vue-select.css" rel="stylesheet">
+    <!--  Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/table.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="navbar navbar-inverse fixed-top active" id="header">
+      <div class="navbar-brand"><a id="menu-toggle"><span class="material-icons">menu</span></a>
+        <h1> <a href="./1.0_index.html"><span>IIO</span>營運後台</a></h1>
+      </div>
+      <ul class="topbar-menu">
+        <li><span class="greeting">Have a Good Time</span></li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">notifications</span><span class="red-dot"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item"><a class="dropdown-info" href="3.1.1_selling-item.html"><span class="b-caption">[商品審核] [熱門]超可愛小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>16:55</span></div>
+                </li>
+                <li class="dropdown-item"><a class="dropdown-info" href="2.1.1_asset-detail.html"><span class="b-caption">[資產審核] 小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>09:55</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子鞋子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子裙子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">person_outline</span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item read"><a class="dropdown-info" href="./login.html"><span class="b-caption">登出</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </header>
+    <!-- container-->
+    <div class="container-fluid" id="main-content">
+      <div class="row">
+        <div class="expand" id="sidebar-wrapper">
+          <ul id="sidebar"></ul>
+          <div class="overlay show"></div>
+        </div>
+        <div class="col wrap animated fadeIn" id="app">
+          <div class="row">
+            <div id="gotop"><span class="material-icons">arrow_upward</span></div>
+            <div class="col content-top">
+              <div class="breadcrum"> 廠商後台>商品上架管理>C2C 出售商品清單
+              </div>
+              <div class="title-wrap">
+                <div class="info">
+                  <h2 class="text-h2">C2C 出售商品清單
+                  </h2>
+                </div>
+                <div class="toolbar"> 
+                </div>
+                <div class="b-caption w-100">C2C 刊登商品總攬
+                </div>
+              </div>
+              <div class="b-search-group">
+                <div class="b-text-field">
+                  <label>資產大類<span>*</span></label>
+                  <div class="b-field-group">
+                    <div class="b-field-row">
+                      <div class="b-input-wrap">
+                        <v-select class="b-select" :options="category.option" v-model="category.value" :clearable="false"></v-select>
+                      </div>
+                      <div class="b-input-wrap">
+                        <v-select class="b-select" :options="subCategory.option" v-model="subCategory.value" :clearable="false"></v-select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                    <div class="b-text-field">
+                      <label>ITEMID
+                      </label>
+                      <div class="b-field-group"> 
+                        <div class="b-field-row">
+                          <input class="b-input" type="text" placeholder="search" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="b-text-field">
+                      <label>刊登顯示名稱
+                      </label>
+                      <div class="b-field-group"> 
+                        <div class="b-field-row">
+                          <input class="b-input" type="text" placeholder="search" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="b-text-field">
+                      <label>刊登者 OPENID
+                      </label>
+                      <div class="b-field-group"> 
+                        <div class="b-field-row">
+                          <input class="b-input" type="text" placeholder="search" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="b-text-field">
+                      <label class="mb-xxs">狀態
+                      </label>
+                      <div class="b-field-group"> 
+                        <div class="b-field-row">
+                          <div class="b-radio">
+                            <input type="radio" id="全部" name="狀態" value="全部" checked>
+                            <label for="全部">全部</label>
+                          </div>
+                          <div class="b-radio">
+                            <input type="radio" id="刊登中" name="狀態" value="刊登中">
+                            <label for="刊登中">刊登中</label>
+                          </div>
+                          <div class="b-radio">
+                            <input type="radio" id="強制下架" name="狀態" value="強制下架">
+                            <label for="強制下架">強制下架</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                <div class="b-search-buttons">
+                      <button class="b-btn-default ladda-button" data-size="md" data-style="slide-left" type="button"><span class="ladda-label"><i class="fa fa-search"></i>查詢</span><span class="ladda-spinner"></span>
+                        <div class="ladda-progress" style="width:0"></div>
+                      </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="content">
+              <div class="b-table-wrap">
+                <div class="b-table-title"></div>
+                <div class="table-responsive">
+                  <table class="table table-hover" id="productList">
+                    <thead> 
+                          <th>狀態</th>
+                          <th>商品資訊</th>
+                          <th>資產來源</th>
+                          <th>刊登者資訊</th>
+                          <th>價格</th>
+                          <th>開始刊登時間</th>
+                          <th>備註</th>
+                          <th></th>
+                    </thead>
+                    <tbody>
+                      <template> 
+                        <tr v-for="item,idx in dataGrid">
+                          <td> <span class="b-caption">{{state[item.state].label}}</span></td>
+                          <td>
+                            <div class="d-flex align-items-center"><img class="b-t-img" src="https://fakeimg.pl/60x40/dddddd/?text=img">
+                              <div class="b-t-info">
+                                <h3 class="b-t-info-title width-200 b-to-e">{{item.assetName}}</h3>
+                                <div class="d-flex align-items-center">
+                                  <input class="b-input-copy b-caption width-150 b-to-e" :class="'list'+idx" readonly v-model="item.itemID">
+                                  <button class="b-btn-default outline m-none" data-size="xs" type="button" @click="copyAlert(idx)"> 
+                                    <template v-if="item.copied"><span>已複製</span></template>
+                                    <template v-else><span>複製ID</span></template>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td><span class="b-caption-1">{{ item.assetFrom }} </span></td>
+                          <td>
+                            <p>OOO</p>
+                            <p class="b-caption">513513021345155</p>
+                          </td>
+                          <td class="t-r"> <span class="b-caption-l">{{item.price}}</span></td>
+                          <td> 
+                            <p class="b-caption-l">{{item.publishStart}}</p>
+                          </td>
+                          <td> 
+                            <p></p>
+                          </td>
+                          <td><a class="b-btn-default text m-none px-xs" data-size="sm" href="7.1.1_c2c-selling-detail.html">查看 </a>
+                            <button class="b-btn-default text m-none px-xs" data-size="sm" v-if="!item.state" data-toggle="modal" data-target="#deleteConfirm">下架 </button>
+                          </td>
+                        </tr>
+                      </template>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- 尚未儲存-->
+              <div class="modal fade" id="saveWarning" data-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                  <div class="modal-img" data-type="warning"></div>
+                  <div class="modal-content">
+                    <div class="modal-body text-center">
+                      <h3 class="modal-title">尚未儲存</h3>
+                      <p>變更尚未儲存，確定放棄變更資料？</p>
+                    </div>
+                    <div class="modal-footer justify-content-center pt-none">
+                      <button class="b-btn-danger" data-size="lg" type="button" onclick="closeModal('#saveWarning')">確認</button>
+                      <button class="b-btn-default text no-underline" data-size="md" type="button" onclick="closeModal('#saveWarning')">取消</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- 確認下架-->
+              <div class="modal fade" id="deleteConfirm" data-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md" role="document">
+                  <div class="modal-img" data-type="warning"></div>
+                  <div class="modal-content">
+                    <div class="modal-body text-center">
+                      <h3 class="modal-title">確定下架？</h3>
+                      <p class="pb-sm">請填寫下架原因，原因將發送給刊登者。下架後該商品將不會出現在fun市集，且將解鎖背包資產操作功能。</p>
+                      <textarea class="b-textarea m-none" rows="4" cols="48" v-model="rejectReson" placeholder="輸入下架原因" maxlength="240" required></textarea>
+                    </div>
+                    <div class="modal-footer justify-content-center pt-none">
+                      <button class="b-btn-primary" data-size="lg" type="button" :disabled="!rejectReson" onclick="closeModal('#sentConfirm', 'y')">確認</button>
+                      <button class="b-btn-default text no-underline" data-size="md" type="button" data-dismiss="modal">取消</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="copyright">&copy;2021 GASH Co, Ltd. All Right Reserved. </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Vue-->
+    <script src="js/vue.min.js"></script>
+    <!-- jQuery-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap Core JavaScript-->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- input plugin-->
+    <script src="js/datatables.min.js"></script>
+    <!-- input plugin-->
+    <script src="js/flatpickr.js"></script>
+    <!-- multiselector-->
+    <script src="js/vue-select.js"></script>
+    <!-- number-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+    <!-- Custom JavaScript-->
+    <script src="js/sidebar.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+      currentPage('C2C出售清單');
+      
+      var vm = new Vue({
+          el: '#app',
+          data: {
+              rejectReson: '',
+              category: {
+                  value:'道具',
+                  option: [
+                      {value: 'item', label: '道具'},
+                      {value: 'ticket', label: '票券'},
+                      {value: 'collection', label: '其他'}
+                  ]
+              },
+              subCategory: {
+                  value:'全部',
+                  option: [
+                      {value: 'all', label: '全部'},
+                      {value: 'maruko', label: '小丸子'},
+                      {value: 'game2', label: '遊戲二'},
+                      {value: 'game3', label: '遊戲三'}
+                  ]
+              },
+              state: [
+                  {label: '刊登中', markColor: 'success'},
+                  {label: '強制下架', markColor: 'draft'},
+              ],
+              dataGrid: [
+                  {
+                      itemID:'c2a98d80-9963-4640-862e-442ad15f2b3c',
+                      assetName: '小丸子帽子',
+                      price: '1,500',
+                      publishStart: '2021/12/23 23:59',
+                      copied: false,
+                      assetFrom: '遊戲轉回背包',
+                      state: 1,
+                      update_time: '2021/8/9 19:00',
+                      read: false,
+                      delete: true
+                  },
+                  {
+                      itemID:'904eff96-dc6b-40f7-8692-18ab9e55321a',
+                      assetName: '小丸子裙子',
+                      price: '1,500',
+                      publishStart: '2021/12/23 23:59',
+                      copied: false,
+                      assetFrom: '寶箱派發',
+                      state: 0,
+                      update_time: '2021/8/9 15:10',
+                      delete: true
+                  },
+                  {
+                      itemID:"a0421970-23c9-48c3-bde6-ef6d1c15b231",
+                      assetName: '小丸子書包',
+                      price: '1,500',
+                      publishStart: '2021/12/23 23:59',
+                      copied: false,
+                      assetFrom: 'fun市集',
+                      state: 0,
+                      update_time: '2021/8/9 16:00',
+                      delete: true
+                  },
+                  {
+                      itemID:"2250f36f-723d-42d3-8506-fda907c8f292",
+                      assetName: '小丸子鉛筆盒',
+                      price: '1,500',
+                      publishStart: '2021/12/23 23:59',
+                      copied: false,
+                      assetFrom: 'fun市集',
+                      state: 0,
+                      update_time: '2021/8/9 13:30',
+                  },
+                  {
+                      itemID:"40b9efae-a755-4a7b-87c9-28f042d9d324",
+                      assetName: '小丸子特殊角色碎片道具僅供萬聖節活動使用',
+                      price: '1,500',
+                      publishStart: '2021/12/23 23:59',
+                      copied: false,
+                      assetFrom: 'fun市集',
+                      state: 0,
+                      update_time: '2021/8/9 10:00',
+                  }
+                  ,
+                  {
+                      itemID:"a0421970-23c9-48c3-bde6-ef6d1c15b231",
+                      assetName: '小丸子書包',
+                      price: '1,500',
+                      publishStart: '2021/12/23 23:59',
+                      copied: false,
+                      assetFrom: 'fun市集',
+                      state: 0,
+                      update_time: '2021/8/9 18:00',
+                      delete: true
+                  },
+                  {
+                      itemID:"40b9efae-a755-4a7b-87c9-28f042d9d324",
+                      assetName: '小丸子特殊角色碎片道具僅供萬聖節活動使用',
+                      price: '1,500',
+                      publishStart: '2021/12/23 23:59',
+                      copied: false,
+                      assetFrom: 'fun市集',
+                      state: 0,
+                      update_time: '2021/8/9 13:00',
+                  }
+                  ,
+                  {
+                      itemID:"a0421970-23c9-48c3-bde6-ef6d1c15b231",
+                      assetName: '小丸子書包',
+                      price: '1,500',
+                      publishStart: '2021/12/23 23:59',
+                      copied: false,
+                      assetFrom: 'fun市集',
+                      state: 0,
+                      update_time: '2021/8/9 13:00',
+                      delete: true
+                  },
+                  {
+                      itemID:"40b9efae-a755-4a7b-87c9-28f042d9d324",
+                      assetName: '小丸子特殊角色碎片道具僅供萬聖節活動使用',
+                      price: '1,500',
+                      publishStart: '2021/12/23 23:59',
+                      copied: false,
+                      assetFrom: 'fun市集',
+                      state: 0,
+                      update_time: '2021/8/9 13:00',
+                  }
+                  ,
+                  {
+                      itemID:"a0421970-23c9-48c3-bde6-ef6d1c15b231",
+                      assetName: '小丸子書包',
+                      price: '1,500',
+                      publishStart: '2021/12/23 23:59',
+                      copied: false,
+                      assetFrom: 'fun市集',
+                      state: 0,
+                      update_time: '2021/8/9 13:00',
+                      delete: true
+                  },
+                  {
+                      itemID:"2250f36f-723d-42d3-8506-fda907c8f292",
+                      assetName: '小丸子鉛筆盒',
+                      price: '1,500',
+                      publishStart: '2021/12/23 23:59',
+                      copied: false,
+                      assetFrom: 'fun市集',
+                      state: 0,
+                      update_time: '2021/8/9 13:00',
+                  },
+                  {
+                      itemID:"40b9efae-a755-4a7b-87c9-28f042d9d324",
+                      assetName: '小丸子特殊角色碎片道具僅供萬聖節活動使用',
+                      price: '1,500',
+                      publishStart: '2021/12/23 23:59',
+                      copied: false,
+                      assetFrom: 'fun市集',
+                      state: 0,
+                      update_time: '2021/8/9 13:00',
+                  }
+              ],
+          },
+          methods: {
+              copyAlert(idx) {
+                  let input = document.querySelector('.list' + idx);
+                  vm.dataGrid[idx].copied = true
+                  input.select();
+                  document.execCommand("copy");
+                  window.setTimeout(function(){
+                      vm.dataGrid[idx].copied = false
+                  }, 3000);
+      
+              }
+          },
+          mounted: function () {
+          }
+      })
+      $(document).ready(function() {
+          $('#productList').DataTable({
+              "pagingType": "full_numbers",
+              "language": {
+                  "decimal":        "",
+                  "emptyTable":     "沒有可顯示的資料",
+                  "info":           "顯示從 _START_ 到 _END_ 共 _TOTAL_ 筆資料",
+                  "infoEmpty":      "顯示從 0 到 0 共 0 筆資料",
+                  "infoFiltered":   "(從 _MAX_ 筆篩選出)",
+                  "infoPostFix":    "",
+                  "thousands":      ",",
+                  "lengthMenu":     "顯示 _MENU_ 筆資料",
+                  "loadingRecords": "載入中...",
+                  "processing":     "執行中...",
+                  "search":         "篩選資料: ",
+                  "zeroRecords":    "查無符合資料",
+                  "paginate": {
+                      "first":      "第一筆",
+                      "last":       "最後一筆",
+                      "next":       "下一筆",
+                      "previous":   "上一筆"
+                  },
+                  "aria": {
+                      "sortAscending":  ": activate to sort column ascending",
+                      "sortDescending": ": activate to sort column descending"
+                  }
+              },
+              "order": [[ 0, "asc" ]],
+              scrollY:        '25rem',
+              searching:      false,
+              scrollX:        true,
+              searching:      false,
+              scrollCollapse: true,
+              fixedColumns:   {
+                  left: 0,
+                  right: 1
+              }
+          });
+      
+      } );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="img/favicon.ico" rel="icon" type="image/x-icon">
+    <title>履保額度</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/flatpickr.css" rel="stylesheet">
+    <link href="css/vue-select.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/table.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="navbar navbar-inverse fixed-top active" id="header">
+      <div class="navbar-brand"><a id="menu-toggle"><span class="material-icons">menu</span></a>
+        <h1> <a href="./1.0_index.html"><span>IIO</span>營運後台</a></h1>
+      </div>
+      <ul class="topbar-menu">
+        <li><span class="greeting">Have a Good Time</span></li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">notifications</span><span class="red-dot"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item"><a class="dropdown-info" href="3.1.1_selling-item.html"><span class="b-caption">[商品審核] [熱門]超可愛小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>16:55</span></div>
+                </li>
+                <li class="dropdown-item"><a class="dropdown-info" href="2.1.1_asset-detail.html"><span class="b-caption">[資產審核] 小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>09:55</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子鞋子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子裙子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">person_outline</span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item read"><a class="dropdown-info" href="./login.html"><span class="b-caption">登出</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </header>
+    <div class="container-fluid" id="main-content">
+      <div class="row">
+        <div class="expand" id="sidebar-wrapper">
+          <ul id="sidebar"></ul>
+          <div class="overlay show"></div>
+        </div>
+        <div class="col wrap">
+          <div class="row">
+            <div id="gotop"><span class="material-icons">arrow_upward</span></div>
+            <div class="col content-top">
+              <div class="breadcrum">營運後台>後台設定>履保額度
+              </div>
+            </div>
+          </div>
+          <div class="row" id="app">
+            <div class="content animated fadeIn">
+              <ul class="nav nav-tabs">
+              </ul>
+              <form class="form-wrap" id="basic-form" @submit.prevent="saveForm()" method="post">
+                <div class="form-top">
+                  <h2 class="text-h3">額度申請
+                  </h2>
+                </div>
+                <fieldset>
+                  <div class="b-text-field d-block">
+                    <label>商家名稱</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <p class="readonly">樂點股份有限公司</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block" :class="formData.date.validation">
+                    <label>變更時間<span>*</span></label>
+                    <div class="b-field-row">
+                      <input class="b-input mr-none" id="dateInput1" type="text" v-model="formData.date.value" placeholder="匯款日期" required>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>目前水位</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <p class="readonly">400,000</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block" :class="formData.price.validation">
+                    <label>變更金額<span>*</span></label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <input class="b-input" type="number" v-model="formData.price.value" placeholder="金額" required>
+                        </div>
+                        <div class="b-radio">
+                          <input type="radio" id="addQuata" name="addQuata" value="addQuata" v-model="formData.applyType.value">
+                          <label for="addQuata">額度增加</label>
+                        </div>
+                        <div class="b-radio d-flex">
+                          <input type="radio" id="minusQuata" name="minusQuata" value="minusQuata" v-model="formData.applyType.value">
+                          <label for="minusQuata">額度返還</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block" :class="formData.code.validation">
+                    <label>轉入行代碼<span>*</span></label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <input class="b-input" type="number" v-model="formData.code.value" maxlength="64" placeholder="轉入行代碼" required>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block" :class="formData.account.validation">
+                    <label>轉入帳號後五碼<span>*</span></label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <input class="b-input" type="number" v-model="formData.account.value" maxlength="64" placeholder="轉入帳號後五碼" required>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <div class="b-form-button">
+                  <button class="b-btn-primary mt-xl" data-size="lg" type="submit" :disabled="submitBtnStatus.disabled" :data-loading="submitBtnStatus.loading">送出</button>
+                </div>
+              </form>
+              <!-- 送出-->
+              <div class="modal fade" id="resultModal" data-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                  <div class="modal-img" data-type="success"></div>
+                  <div class="modal-content">
+                    <div class="modal-body text-center">
+                      <h3 class="modal-title">已送出</h3>
+                    </div>
+                    <div class="modal-footer justify-content-center pt-none">
+                      <button class="b-btn-default w-100 outline" data-size="md" type="button" onclick="window.location.href='./9.1_performance-bond.html'">返回</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="copyright">&copy;2021 GASH Co, Ltd. All Right Reserved. </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/flatpickr.js"></script>
+    <script src="js/vue-select.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+      currentPage('履保額度');
+      
+      var jQfn = function (){
+          $("#dateInput1").flatpickr({
+              static: true,
+              enableSeconds: true,
+              dateFormat: "Y/m/d",
+              minDate: "today"
+          });
+      }
+      var formatter = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'TWD',
+      
+      });
+      
+      var vm = new Vue({
+          el: '#app',
+          data() {
+              return {
+                  formData: {
+                      date: {
+                          value: '',
+                          validation: ''
+                      },
+                      code:{
+                          value: '',
+                          validation: ''
+                      },
+                      price: {
+                          value: '',
+                          validation: ''
+                      },
+                      account: {
+                          value: '',
+                          validation: ''
+                      },
+                      applyType: {
+                          value: 'addQuata',
+                      },
+                  },
+                  submitBtnStatus: {
+                      disabled: false,
+                      loading: false,
+                  },
+                  errorClass:'validate-error',
+              }
+          },
+          watch: {
+              formData: {
+                  handler: function () {
+                      this.formData.date.value? this.formData.date.validation = '': ''
+                      this.formData.code.value? this.formData.code.validation = '': ''
+                      this.formData.price.value? this.formData.price.validation = '': ''
+                      this.formData.account.value? this.formData.account.validation = '': ''
+                  },
+                  deep: true
+              },
+          },
+          computed: {
+          },
+          methods: {
+              saveForm: function (){
+                  this.submitBtnStatus.disabled = true  
+                  this.submitBtnStatus.loading = true  
+                  window.setTimeout(function(){
+                      vm.submitBtnStatus.loading = false
+                      vm.submitBtnStatus.disabled = true  
+                      vm.validationEmpty(vm.showAlert)
+                  }, 1000);
+              },
+              validationEmpty: function(cb){
+                  // 要填寫
+                  this.formData.date.value? '' : this.formData.date.validation = this.errorClass
+                  this.formData.code.value? '' : this.formData.code.validation = this.errorClass
+                  this.formData.price.value? '' : this.formData.price.validation = this.errorClass
+                  this.formData.account.value? '' : this.formData.account.validation = this.errorClass
+      
+                  window.setTimeout(function(){
+                      if( typeof cb === 'function' ){
+                          cb();
+                      }
+                  }, 600)
+              },
+              showAlert: function(){
+                  if(document.querySelectorAll('.validate-error').length>0) {
+                      this.submitBtnStatus.loading = false  
+                      this.submitBtnStatus.disabled = false
+                      // 捲動到錯誤的欄位位置 
+                      let top = document.querySelectorAll('.validate-error')[0].offsetTop
+                      //- console.log(top.scrollY, top.scorllTop, top.offsetTop)
+                      window.scrollTo({
+                          top: top,
+                          left: 0,
+                          behavior: 'smooth'
+                      })
+                  } else {
+                      $('#resultModal').modal('show')
+                  }
+              },
+          },
+          mounted: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          },
+          updated: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          }
+      })
+    </script>
+  </body>
+</html>

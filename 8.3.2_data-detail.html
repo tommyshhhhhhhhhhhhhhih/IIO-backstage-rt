@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="img/favicon.ico" rel="icon" type="image/x-icon">
+    <title>遊戲資訊</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/flatpickr.css" rel="stylesheet">
+    <link href="css/vue-select.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/table.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="navbar navbar-inverse fixed-top active" id="header">
+      <div class="navbar-brand"><a id="menu-toggle"><span class="material-icons">menu</span></a>
+        <h1> <a href="./1.0_index.html"><span>IIO</span>營運後台</a></h1>
+      </div>
+      <ul class="topbar-menu">
+        <li><span class="greeting">Have a Good Time</span></li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">notifications</span><span class="red-dot"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item"><a class="dropdown-info" href="3.1.1_selling-item.html"><span class="b-caption">[商品審核] [熱門]超可愛小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>16:55</span></div>
+                </li>
+                <li class="dropdown-item"><a class="dropdown-info" href="2.1.1_asset-detail.html"><span class="b-caption">[資產審核] 小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>09:55</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子鞋子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子裙子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">person_outline</span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item read"><a class="dropdown-info" href="./login.html"><span class="b-caption">登出</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </header>
+    <div class="container-fluid" id="main-content">
+      <div class="row">
+        <div class="expand" id="sidebar-wrapper">
+          <ul id="sidebar"></ul>
+          <div class="overlay show"></div>
+        </div>
+        <div class="col wrap">
+          <div class="row">
+            <div id="gotop"><span class="material-icons">arrow_upward</span></div>
+            <div class="col content-top">
+              <div class="breadcrum">營運後台>後台設定>遊戲資訊
+              </div>
+            </div>
+          </div>
+          <div class="row" id="app">
+            <div class="content animated fadeIn">
+              <ul class="nav nav-tabs">
+              </ul>
+              <form class="form-wrap" id="basic-form" @submit.prevent="saveForm()" method="post">
+                <div class="form-top">
+                  <h2 class="text-h3">遊戲資訊
+                  </h2>
+                </div>
+                <fieldset>
+                  <div class="b-text-field">
+                    <label>資料名稱<span>*</span></label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <input class="b-input" type="text" v-model.lazy="dataInfo.label" disabled maxlength="15" placeholder="請輸入資料名稱" required>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field">
+                    <label>資料 key<span>*</span></label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <input class="b-input" type="text" v-model="dataInfo.key" disabled maxlength="64" placeholder="請輸入資料key" required>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field">
+                    <label>所屬廠商</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <v-select class="b-select" :options="cp" v-model="dataInfo.cp" placeholder="所屬廠商" disabled :clearable="false"></v-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field">
+                    <label>相關資產數</label>
+                    <div class="b-field-group">
+                      <div class="b-input-wrap width-200">
+                        <p class="readonly">168</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field">
+                    <label>刊登中商品數</label>
+                    <div class="b-field-group">
+                      <div class="b-input-wrap width-200">
+                        <p class="readonly">1688</p>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <div class="b-form-button">
+                  <button class="b-btn-secondary outline mt-xl" data-size="lg" onclick="window.location.href='./8.3_data-list.html'">返回</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="copyright">&copy;2021 GASH Co, Ltd. All Right Reserved. </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/flatpickr.js"></script>
+    <script src="js/vue-select.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+      currentPage('資料權限');
+      
+      var jQfn = function (){
+      }
+      
+      var vm = new Vue({
+          el: '#app',
+          data() {
+              return {
+                  dataInfo: {
+                      key: 'game1',
+                      label: '遊戲一',
+                      cp: 'OO',
+                  },
+                  cp: [
+                      {value: 'OO', label: 'OO供應商'},
+                      {value: 'XX', label: 'XX供應商'},
+                      {value: 'AA', label: 'AA供應商'},
+                      {value: 'BB', label: 'BB供應商'},
+                      {value: 'CC', label: 'CC供應商'},
+                  ],
+                  roleDesc: {
+                      value: '資產建立、上架人員',
+                      placeholder: '請輸入角色描述',
+                      validation: true
+                  },
+                  saveBtnStatus: {
+                      disabled: false,
+                      loading: false,
+                      label: '儲存變更'
+                  },
+                  errorClass:'validate-error',
+              }
+          },
+          watch: {
+              "dataInfo.key": function () {
+                  if(/^[a-zA-Z0-9-_]+$/.test(this.dataInfo.key)) {
+                      return;
+                  } else {
+                      this.dataInfo.key = this.dataInfo.key.slice(0, -1)
+                  }
+      
+              },
+              "roleGroup.value": function () {
+                  if(this.roleGroup.value.length < 1) {
+                      this.roleGroup.validation = false
+                  } else {
+                      this.roleGroup.validation = true
+                  }
+              },
+              "dataAuth.value": function () {
+                  if(this.dataAuth.value.length < 1) {
+                      this.dataAuth.validation = false
+                  } else {
+                      this.dataAuth.validation = true
+                  }
+              },
+          },
+          methods: {
+              selectAll: function(idx) {
+                  window.setTimeout(function(){
+                      vm.page[idx].childPage.forEach(function(item, index, array){
+                          item.read = vm.page[idx].auth
+                          item.create = vm.page[idx].auth
+                          item.edit = vm.page[idx].auth
+                          item.delete = vm.page[idx].auth
+                      })
+                  },30)
+                  
+              },
+              saveForm: function (){
+                  function validation() {
+                      if(document.querySelectorAll('.validate-error').length > 0) {
+                          $('html, body').animate({
+                              scrollTop: $('.validate-error').offset().top - 50
+                          }, 300);
+                          vm.saveBtnStatus.disabled = false
+                      } else {
+                          vm.showSaved()
+                      }
+                  }
+      
+                  this.saveBtnStatus.disabled = true
+      
+                  window.setTimeout(function(){
+                      validation()
+                  }, 600);
+              },
+              showSaved: function() {
+                  this.saveBtnStatus.loading = true
+                  this.saveBtnStatus.label = '儲存中'
+                  window.setTimeout(function(){
+                      vm.saveBtnStatus.disabled = true
+                      vm.saveBtnStatus.loading = false
+                      vm.saveBtnStatus.label = '已儲存'
+                  }, 1000);
+                  window.setTimeout(function(){
+                      vm.saveBtnStatus.label = '儲存變更'
+                      vm.saveBtnStatus.disabled = false
+                  }, 2000);
+              },
+              
+          },
+          mounted: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          },
+          updated: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          }
+      })
+    </script>
+  </body>
+</html>

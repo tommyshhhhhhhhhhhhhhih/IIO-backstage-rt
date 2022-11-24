@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="img/favicon.ico" rel="icon" type="image/x-icon">
+    <title>角色權限</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/flatpickr.css" rel="stylesheet">
+    <link href="css/vue-select.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/table.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="navbar navbar-inverse fixed-top active" id="header">
+      <div class="navbar-brand"><a id="menu-toggle"><span class="material-icons">menu</span></a>
+        <h1> <a href="./1.0_index.html"><span>IIO</span>營運後台</a></h1>
+      </div>
+      <ul class="topbar-menu">
+        <li><span class="greeting">Have a Good Time</span></li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">notifications</span><span class="red-dot"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item"><a class="dropdown-info" href="3.1.1_selling-item.html"><span class="b-caption">[商品審核] [熱門]超可愛小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>16:55</span></div>
+                </li>
+                <li class="dropdown-item"><a class="dropdown-info" href="2.1.1_asset-detail.html"><span class="b-caption">[資產審核] 小丸子帽子</span></a>
+                  <div class="date"><span>今天</span><span>09:55</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子鞋子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+                <li class="dropdown-item read">
+                  <div class="dropdown-info">
+                    <p class="b-caption">[資產審核] 小丸子裙子</p>
+                  </div>
+                  <div class="date"><span>8-12</span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <button class="dropdown-toggle topbar-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="material-icons">person_outline</span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-list">
+                <li class="dropdown-item read"><a class="dropdown-info" href="./login.html"><span class="b-caption">登出</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </header>
+    <div class="container-fluid" id="main-content">
+      <div class="row">
+        <div class="expand" id="sidebar-wrapper">
+          <ul id="sidebar"></ul>
+          <div class="overlay show"></div>
+        </div>
+        <div class="col wrap">
+          <div class="row">
+            <div id="gotop"><span class="material-icons">arrow_upward</span></div>
+            <div class="col content-top">
+              <div class="breadcrum">營運後台>後台設定>角色權限
+              </div>
+            </div>
+          </div>
+          <div class="row" id="app">
+            <div class="content animated fadeIn">
+              <ul class="nav nav-tabs">
+              </ul>
+              <form class="form-wrap" id="basic-form" @submit.prevent="saveForm()" method="post">
+                <div class="form-top">
+                  <h2 class="text-h3">角色權限
+                  </h2>
+                </div>
+                <fieldset>
+                  <div class="b-text-field d-block" :class="!roleName.validation? errorClass: ''">
+                    <label>角色名稱<span>*</span></label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <div class="b-input-wrap">
+                          <input class="b-input" type="text" v-model.lazy="roleName.value" maxlength="48" :placeholder="roleName.placeholder" required><span class="b-caption text-danger" v-if="!roleName.validation">請輸入符合格式的 Email</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>角色類型</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <v-select class="b-select" :options="roleType.option" required v-model="roleType.value" placeholder="請選擇角色類型" :clearable="false"></v-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="b-text-field d-block">
+                    <label>角色描述</label>
+                    <div class="b-field-group">
+                      <div class="b-field-row">
+                        <textarea class="b-textarea" rows="4" cols="48" v-model="roleDesc.value" :placeholder="roleDesc.placeholder"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <template v-for="item,idx in page" v-if="item.type === roleType.value.value">
+                    <div class="d-flex">
+                      <h4 class="text-h4 pr-md">{{ item.label }}</h4>
+                      <div class="b-checkbox d-inline">
+                        <input type="checkbox" :id="item.name" v-model="item.auth" @click="selectAll(idx)">
+                        <label class="pr-xs" :for="item.name">全選</label>
+                      </div>
+                    </div>
+                    <template v-for="subItem in item.childPage">
+                      <div class="d-flex col-12 align-items-center">
+                        <h6 class="text-h6 text-AA pt-xs pb-sm pr-md mb-xxs">{{ subItem.label }}</h6>
+                        <div class="b-checkbox" v-if="subItem.read">
+                          <input type="checkbox" :id="subItem.name + 'read'" v-model="subItem.read.active">
+                          <label class="pr-xs" :for="subItem.name + 'read'">瀏覽</label>
+                        </div>
+                        <div class="b-checkbox" v-if="subItem.create">
+                          <input type="checkbox" :id="subItem.name + 'create'" v-model="subItem.create.active">
+                          <label class="pr-xs" :for="subItem.name + 'create'">新增</label>
+                        </div>
+                        <div class="b-checkbox" v-if="subItem.edit">
+                          <input type="checkbox" :id="subItem.name + 'edit'" v-model="subItem.edit.active">
+                          <label class="pr-xs" :for="subItem.name + 'edit'">編輯</label>
+                        </div>
+                        <div class="b-checkbox" v-if="subItem.delete">
+                          <input type="checkbox" :id="subItem.name + 'delete'" v-model="subItem.delete.active">
+                          <label class="pr-xs" :for="subItem.name + 'delete'">刪除</label>
+                        </div>
+                        <div class="b-checkbox" v-if="subItem.review">
+                          <input type="checkbox" :id="subItem.name + 'review'" v-model="subItem.review.active">
+                          <label class="pr-xs" :for="subItem.name + 'review'">審核</label>
+                        </div>
+                      </div>
+                    </template>
+                    <hr>
+                  </template>
+                </fieldset>
+                <div class="b-form-button">
+                  <button class="b-btn-secondary outline mt-xl" data-size="lg" :disabled="saveBtnStatus.disabled" :data-loading="saveBtnStatus.loading">{{saveBtnStatus.label}}</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="copyright">&copy;2021 GASH Co, Ltd. All Right Reserved. </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/flatpickr.js"></script>
+    <script src="js/vue-select.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+      currentPage('角色權限');
+      
+      var jQfn = function (){
+      }
+      
+      var vm = new Vue({
+          el: '#app',
+          data() {
+              return {
+                  roleName: {
+                      value: '上架人員',
+                      placeholder: '請輸入角色名稱',
+                      validation: true
+                  },
+                  roleType: {
+                      value: {label: '廠商', value: 'cp'},
+                      //- value: {label: '營運', value: 'rt'},
+                      option: [
+                          {label: '廠商', value: 'cp'},
+                          {label: '營運', value: 'rt'},
+                      ]
+                  },
+                  roleDesc: {
+                      value: '資產建立、上架人員',
+                      placeholder: '請輸入角色描述',
+                      validation: true
+                  },
+                  page: [
+                      {
+                          type: 'cp',
+                          label: '資產建立',
+                          name: 'asset',
+                          auth: false,
+                          childPage: [
+                              {
+                                  label: '註冊資產清單', name: 'assetList',
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                                  review: {
+                                      active: false,
+                                  }
+                              },
+                              {
+                                  label: '註冊資產', name: 'assetRegist', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                              },
+                              {
+                                  label: '批次註冊', name: 'batch', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                          ]
+                      },
+                      {
+                          type: 'cp',
+                          label: '商品上架管理',
+                          name: 'product',
+                          auth: false,
+                          childPage: [
+                              {
+                                  label: '上架清單', name: 'sell', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                                  review: {
+                                      active: false,
+                                  }
+                              },
+                          ]
+                      },
+                      {
+                          type: 'cp',
+                          label: '營收資訊',
+                          name: 'payment',
+                          auth: false,
+                          childPage: [
+                              {
+                                  label: '營收資訊', name: 'paymentreport',
+                                  read: {
+                                      active: false,
+                                  }, 
+                              },
+                          ]
+                      },
+                      {
+                          type: 'cp',
+                          label: '客服管理',
+                          name: 'cs',
+                          auth: false,
+                          childPage: [
+                              {
+                                  label: '退貨申請', name: 're', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  review: {
+                                      active: false,
+                                  }
+                              },
+                          ]
+                      },
+                      
+                      {
+                          type: 'cp',
+                          label: '帳號管理',
+                          name: 'account',
+                          auth: false,
+                          childPage: [
+                              {
+                                  label: '個人帳號設定', name: 'userAccount', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                              {
+                                  label: '收款帳戶', name: 'receive', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                              {
+                                  label: '發票設定(P2)', name: 'receipt',
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                              {
+                                  label: '客服管理(P2)', name: 'cs',
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                              {
+                                  label: '黑名單(P2)', name: 'blacklist',
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                          ]
+                      },
+                      {
+                          type: 'rt',
+                          label: '資產註冊管理',
+                          name: 'assetManage',
+                          auth: false,
+                          childPage: [
+                              {
+                                  label: '註冊資產清單', name: 'assetList', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                                  review: {
+                                      active: false,
+                                  }
+                              },
+                          ]
+                      },
+                      {
+                          type: 'rt',
+                          label: '商品上架管理',
+                          name: 'mallManage',
+                          auth: false,
+                          childPage: [
+                              {
+                                  label: 'B2C上架清單', name: 'sellList', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                                  review: {
+                                      active: false,
+                                  }
+                              },
+                              {
+                                  label: 'B2C上架審核', name: 'sellReview', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                                  review: {
+                                      active: false,
+                                  }
+                              },
+                              {
+                                  label: 'C2C出售清單', name: 'c2cSellList', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                          ]
+                      },
+                      {
+                          type: 'rt',
+                          label: '商城管理',
+                          name: 'mallManage',
+                          auth: false,
+                          childPage: [
+                              {
+                                  label: '行銷版位', name: 'adSlot', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                              {
+                                  label: '官方旗艦店(P2)', name: 'officialStore', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                          ]
+                      },
+                      {
+                          type: 'rt',
+                          label: '廠商管理',
+                          name: 'cpManage',
+                          auth: false,
+                          childPage: [
+                              {
+                                  label: '廠商名單管理', name: 'cpList', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                          ]
+                      },
+                      {
+                          type: 'rt',
+                          label: '財務管理',
+                          name: 'fin',
+                          auth: false,
+                          childPage: [
+                              {
+                                  label: '履保餘額', name: 'gar', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                              {
+                                  label: '銀行帳戶驗證', name: 'bank', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                          ]
+                      },
+                      {
+                          type: 'rt',
+                          label: '客服管理',
+                          name: 'csManage',
+                          auth: false,
+                          childPage: [
+                              {
+                                  label: '訂單查詢', name: 'orderSearch', 
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                          ]
+                      },
+                      {
+                          type: 'rt',
+                          label: '後台設定',
+                          name: 'setting',
+                          auth: false,
+                          childPage: [
+                              {
+                                  label: '帳號管理', name: 'accountManage',
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                              {
+                                  label: '角色權限', name: 'role',
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                              {
+                                  label: '資料權限', name: 'dataList',
+                                  read: {
+                                      active: false,
+                                  }, 
+                                  create: {
+                                      active: false,
+                                  }, 
+                                  edit: {
+                                      active: false,
+                                  }, 
+                                  delete: {
+                                      active: false,
+                                  },
+                              },
+                          ]
+                      },
+                  ],
+                  saveBtnStatus: {
+                      disabled: false,
+                      loading: false,
+                      label: '儲存變更'
+                  },
+                  errorClass:'validate-error',
+              }
+          },
+          watch: {
+              "roleName.value": function () {
+                  if(!this.name.value) {
+                      this.name.validation = false
+                  } else {
+                      this.name.validation = true
+                  }
+              },
+              "roleGroup.value": function () {
+                  if(this.roleGroup.value.length < 1) {
+                      this.roleGroup.validation = false
+                  } else {
+                      this.roleGroup.validation = true
+                  }
+              },
+              "dataAuth.value": function () {
+                  if(this.dataAuth.value.length < 1) {
+                      this.dataAuth.validation = false
+                  } else {
+                      this.dataAuth.validation = true
+                  }
+              },
+          },
+          methods: {
+              selectAll: function(idx) {
+                  window.setTimeout(function(){
+                      vm.page[idx].childPage.forEach(function(item, index, array){
+                          item.read = vm.page[idx].auth
+                          item.create = vm.page[idx].auth
+                          item.edit = vm.page[idx].auth
+                          item.delete = vm.page[idx].auth
+                          item.review = vm.page[idx].auth
+                      })
+                  },30)
+      
+              },
+              saveForm: function (){
+                  function validation() {
+                      if(document.querySelectorAll('.validate-error').length > 0) {
+                          $('html, body').animate({
+                              scrollTop: $('.validate-error').offset().top - 50
+                          }, 300);
+                          vm.saveBtnStatus.disabled = false
+                      } else {
+                          vm.showSaved()
+                      }
+                  }
+      
+                  this.saveBtnStatus.disabled = true
+      
+                  window.setTimeout(function(){
+                      validation()
+                  }, 600);
+              },
+              showSaved: function() {
+                  this.saveBtnStatus.loading = true
+                  this.saveBtnStatus.label = '儲存中'
+                  window.setTimeout(function(){
+                      vm.saveBtnStatus.disabled = true
+                      vm.saveBtnStatus.loading = false
+                      vm.saveBtnStatus.label = '已儲存'
+                  }, 1000);
+                  window.setTimeout(function(){
+                      vm.saveBtnStatus.label = '儲存變更'
+                      vm.saveBtnStatus.disabled = false
+                  }, 2000);
+              },
+          },
+          mounted: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          },
+          updated: function () {
+              this.$nextTick(function () {
+                  jQfn()
+              })
+          }
+      })
+    </script>
+  </body>
+</html>
